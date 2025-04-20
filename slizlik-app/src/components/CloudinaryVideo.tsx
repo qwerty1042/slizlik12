@@ -1,8 +1,5 @@
 import React from 'react';
 import { AdvancedVideo } from '@cloudinary/react';
-import { fill } from '@cloudinary/url-gen/actions/resize';
-import { quality } from '@cloudinary/url-gen/actions/delivery';
-import { auto } from '@cloudinary/url-gen/qualifiers/quality';
 import cld from '../config/cloudinary';
 
 interface CloudinaryVideoProps {
