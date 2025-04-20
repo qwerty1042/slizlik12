@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Volume2, AlertTriangle, Video } from "lucide-react";
 import { motion } from "framer-motion";
 import "../styles/introScreen.css";
@@ -14,7 +14,6 @@ interface IntroScreenProps {
 const IntroScreen: React.FC<IntroScreenProps> = ({ onReady }) => {
   const [showSplash, setShowSplash] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleStart = () => {
     const audio = new Audio("/assets/welcome.mp3");
