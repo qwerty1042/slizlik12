@@ -1,15 +1,7 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "slizlik-app/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build",
-        "zeroConfig": true
-      }
-    }
-  ],
+  "buildCommand": "cd slizlik-app && npm install && npm run build",
+  "outputDirectory": "slizlik-app/build",
   "rewrites": [
     {
       "source": "/static/(.*)",

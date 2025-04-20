@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cd slizlik-app && npm install && npm run build && cp -r build/* ../",
-    "vercel-build": "cd slizlik-app && npm install && npm run build && cp -r build/* ../"
+    "build": "cd slizlik-app && npm install && npm run build",
+    "start": "cd slizlik-app && npm start"
   },
   "keywords": [],
   "author": "",
