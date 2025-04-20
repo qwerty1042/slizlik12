@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import '../styles/mode.css';
 import '../styles/introScreen.css';
+import CloudinaryVideo from '../components/CloudinaryVideo';
 
 const SlotMode: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -42,18 +43,13 @@ const SlotMode: React.FC = () => {
         <div className="custom-card">
           <div className="card-content">
             <div className="video-wrapper">
-              <video 
-                ref={videoRef}
+              <CloudinaryVideo
+                publicId="drochka_2_ud7cqb"
                 className="game-video"
-                autoPlay 
+                autoPlay
                 loop
-                playsInline
                 muted
-                preload="auto"
-              >
-                <source src="/assets/drochka_2.mp4" type="video/mp4" />
-                Ваш браузер не поддерживает видео
-              </video>
+              />
             </div>
           </div>
         </div>

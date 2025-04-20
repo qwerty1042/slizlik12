@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "cd slizlik-app && git lfs install && git lfs pull && npm install && npm run build",
+  "buildCommand": "cd slizlik-app && npm install && npm run build",
   "outputDirectory": "slizlik-app/build",
   "rewrites": [
     {

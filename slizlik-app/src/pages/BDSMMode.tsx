@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/mode.css';
+import CloudinaryVideo from '../components/CloudinaryVideo';
 
 interface Position {
     x: number;
@@ -147,17 +148,12 @@ const BdsmMode: React.FC = () => {
             {showVideo && (
                 <div className="video-container">
                     <div className="video-wrapper">
-                        <video
-                            ref={videoRef}
+                        <CloudinaryVideo
+                            publicId="ulta_Slavika_n1ee6q"
                             className="game-video"
-                            preload="auto"
-                            playsInline
                             controls={false}
                             onEnded={handleVideoEnd}
-                        >
-                            <source src="/assets/ulta_Slavika.mp4" type="video/mp4" />
-                            Ваш браузер не поддерживает видео
-                        </video>
+                        />
                     </div>
                 </div>
             )}
