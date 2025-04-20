@@ -30,7 +30,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "set CI=false&&react-scripts build&&xcopy /E /I /Y public\\assets build\\assets",
+    "build": "set CI=false&&react-scripts build&&cp -r public/assets build/assets",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
