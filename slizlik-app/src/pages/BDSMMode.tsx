@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import "../styles/mode.css";
 import CloudinaryVideo from '../components/CloudinaryVideo';
 
 const BdsmMode: React.FC = () => {
-  const navigate = useNavigate();
   const [showIntro, setShowIntro] = useState(true);
   const [showVideo, setShowVideo] = useState(false);
   const [showFinalIntro, setShowFinalIntro] = useState(false);
-  const [showGame, setShowGame] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -26,7 +23,6 @@ const BdsmMode: React.FC = () => {
 
   const handleStartGame = () => {
     setShowFinalIntro(false);
-    setShowGame(true);
   };
 
   const getRandomPosition = () => {
