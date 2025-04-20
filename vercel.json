@@ -5,26 +5,27 @@
       "src": "slizlik-app/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "slizlik-app/build"
+        "distDir": "build",
+        "zeroConfig": true
       }
     }
   ],
   "rewrites": [
     {
       "source": "/static/(.*)",
-      "destination": "/slizlik-app/build/static/$1"
+      "destination": "/static/$1"
     },
     {
       "source": "/assets/(.*)",
-      "destination": "/slizlik-app/public/assets/$1"
+      "destination": "/assets/$1"
     },
     {
       "source": "/favicon.ico",
-      "destination": "/slizlik-app/public/favicon.ico"
+      "destination": "/favicon.ico"
     },
     {
       "source": "/(.*)",
-      "destination": "/slizlik-app/build/index.html"
+      "destination": "/index.html"
     }
   ]
 }
