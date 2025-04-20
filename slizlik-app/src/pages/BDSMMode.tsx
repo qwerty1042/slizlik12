@@ -10,17 +10,7 @@ const BdsmMode: React.FC = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (containerRef.current) {
-      setContainerSize({
-        width: containerRef.current.offsetWidth,
-        height: containerRef.current.offsetHeight
-      });
-    }
-  }, []);
 
   const handleContinue = () => {
     setShowVideo(true);
@@ -173,6 +163,7 @@ const BdsmMode: React.FC = () => {
       <div className="game-container" ref={containerRef}>
         <img
           src="assets/pletka.png"
+          alt="Плетка"
           className="draggable-element"
           style={{
             left: `${position.x}px`,
@@ -187,6 +178,7 @@ const BdsmMode: React.FC = () => {
         />
         <img
           src="assets/kopilka.png"
+          alt="Копилка"
           className="target-element"
           style={{
             left: '50%',
