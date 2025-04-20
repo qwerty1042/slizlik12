@@ -84,10 +84,11 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onReady }) => {
                 Покатать на вертолетике
               </Click>
             </div>
-            <div className="video-test-container">
+            <div className="video-wrapper">
               <video
                 ref={videoRef}
-                className="video-test"
+                className="game-video"
+                preload="auto"
                 playsInline
                 muted
               >
