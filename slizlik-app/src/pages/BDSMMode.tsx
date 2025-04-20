@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/mode.css";
+import "../styles/introScreen.css";
+import "../styles/button.css";
+import { Video } from "lucide-react";
 import CloudinaryVideo from '../components/CloudinaryVideo';
 
 const BdsmMode: React.FC = () => {
@@ -18,12 +21,12 @@ const BdsmMode: React.FC = () => {
   };
 
   const handleVideoStart = () => {
-    setShowVideoButton(false);
     setShowVideo(true);
   };
 
   const handleVideoEnd = () => {
     setShowVideo(false);
+    setShowVideoButton(false);
     setShowFinalIntro(true);
   };
 
@@ -159,47 +162,35 @@ const BdsmMode: React.FC = () => {
 
   if (showVideoButton) {
     return (
-      <div className="custom-card">
-        <div className="card-content">
-          <div className="card-icon">
-            <span>🎥</span>
-          </div>
-          <p>При нажатии на кнопку ты увидишь анимацию</p>
-          <div className="custom-button">
-            <button
-              className="sound-button"
-              onClick={handleVideoStart}
-            >
-              Покатать на вертолетике
-            </button>
-          </div>
-          {showVideo && (
-            <div className="video-wrapper">
-              <CloudinaryVideo
-                publicId="ulta_Slavika"
-                className="game-video"
-                controls={false}
-                autoPlay={true}
-                onEnded={handleVideoEnd}
-              />
+      <div className="intro-screen">
+        <div className="intro-cards">
+          <div className="custom-card">
+            <div className="card-content">
+              <div className="card-icon">
+                <Video size={24} />
+              </div>
+              <p>При нажатии на кнопку ты увидишь анимацию</p>
+              <div className="custom-button">
+                <button
+                  className="sound-button"
+                  onClick={handleVideoStart}
+                >
+                  Покатать на вертолетике
+                </button>
+              </div>
+              {showVideo && (
+                <div className="video-wrapper">
+                  <CloudinaryVideo
+                    publicId="ulta_Slavika_n1ee6q"
+                    className="game-video"
+                    controls={false}
+                    autoPlay={true}
+                    onEnded={handleVideoEnd}
+                  />
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  if (showVideo) {
-    return (
-      <div className="video-container">
-        <div className="video-wrapper">
-          <CloudinaryVideo
-            publicId="ulta_Slavika"
-            className="game-video"
-            controls={false}
-            autoPlay={true}
-            onEnded={handleVideoEnd}
-          />
+          </div>
         </div>
       </div>
     );
