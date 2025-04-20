@@ -126,7 +126,7 @@ const BdsmMode: React.FC = () => {
 
     return (
         <div className="mode-container" ref={containerRef}>
-            <audio ref={audioRef} src="assets/slaviku-horosho.mp3" preload="auto" />
+            <audio ref={audioRef} src={`${process.env.PUBLIC_URL}/assets/slaviku-horosho.mp3`} preload="auto" />
             <button 
                 className="exit-button"
                 onClick={() => navigate('/home')}
@@ -148,7 +148,7 @@ const BdsmMode: React.FC = () => {
                 <div className="video-container">
                     <video
                         ref={videoRef}
-                        src="assets/ulta_Slavika.mp4"
+                        src={`${process.env.PUBLIC_URL}/assets/ulta_Slavika.mp4`}
                         controls={false}
                         onEnded={handleVideoEnd}
                     />
@@ -181,7 +181,7 @@ const BdsmMode: React.FC = () => {
                         }}
                         onMouseDown={handleMouseDown}
                     >
-                        <img src="assets/pletka.png" alt="Плетка" draggable="false" />
+                        <img src={`${process.env.PUBLIC_URL}/assets/pletka.png`} alt="Плетка" draggable="false" />
                     </div>
                     <div 
                         className="target-element kopilka"
@@ -190,7 +190,7 @@ const BdsmMode: React.FC = () => {
                             top: `${kopilkaPos.y}px`
                         }}
                     >
-                        <img src="assets/kopilka.png" alt="Копилка" draggable="false" />
+                        <img src={`${process.env.PUBLIC_URL}/assets/kopilka.png`} alt="Копилка" draggable="false" />
                     </div>
                 </>
             )}
