@@ -159,12 +159,32 @@ const BdsmMode: React.FC = () => {
 
   if (showVideoButton) {
     return (
-      <div className="bdsm-intro">
-        <h1>Посмотри на Славика</h1>
-        <p>Теперь вы увидите, как Славик ведет себя, когда его никто не наказывает.</p>
-        <button className="continue-button" onClick={handleVideoStart}>
-          Покатать на вертолетике
-        </button>
+      <div className="custom-card">
+        <div className="card-content">
+          <div className="card-icon">
+            <span>🎥</span>
+          </div>
+          <p>При нажатии на кнопку ты увидишь анимацию</p>
+          <div className="custom-button">
+            <button
+              className="sound-button"
+              onClick={handleVideoStart}
+            >
+              Покатать на вертолетике
+            </button>
+          </div>
+          {showVideo && (
+            <div className="video-wrapper">
+              <CloudinaryVideo
+                publicId="ulta_Slavika"
+                className="game-video"
+                controls={false}
+                autoPlay={true}
+                onEnded={handleVideoEnd}
+              />
+            </div>
+          )}
+        </div>
       </div>
     );
   }
