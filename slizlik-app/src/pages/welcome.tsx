@@ -5,6 +5,7 @@ import "../styles/introScreen.css";
 import "../styles/button.css"
 import Click from "../components/click";
 import SplashScreen from "../components/SplashScreen";
+import CloudinaryVideo from '../components/CloudinaryVideo';
 
 interface IntroScreenProps {
   onReady: () => void;
@@ -29,6 +30,10 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onReady }) => {
         console.error("Ошибка воспроизведения видео:", error);
       });
     }
+  };
+
+  const handleVideoEnd = () => {
+    // Handle video end
   };
 
   if (showSplash) {
@@ -85,16 +90,12 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onReady }) => {
               </Click>
             </div>
             <div className="video-wrapper">
-              <video
-                ref={videoRef}
+              <CloudinaryVideo
+                publicId="roll_mvmmxr"
                 className="game-video"
-                preload="auto"
-                playsInline
-                muted
-              >
-                <source src="/assets/roll.mp4" type="video/mp4" />
-                Ваш браузер не поддерживает видео
-              </video>
+                controls={false}
+                onEnded={handleVideoEnd}
+              />
             </div>
           </div>
         </div>
