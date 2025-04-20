@@ -1,19 +1,13 @@
 {
   "name": "slizlik",
   "version": "1.0.0",
-  "private": true,
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "build": "cd slizlik-app && npm install && npm run build",
     "vercel-build": "cd slizlik-app && npm install && npm run build && mv build ../build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/qwerty1042/slizlik12.git"
-  },
+  "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "-": "^0.0.1",
-    "@tailwindcss/postcss7-compat": "^2.2.17"
-  }
+  "license": "ISC"
 }

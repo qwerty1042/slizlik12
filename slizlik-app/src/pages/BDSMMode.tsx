@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/mode.css';
 
@@ -21,14 +21,14 @@ const BdsmMode: React.FC = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const audioRef = useRef<HTMLAudioElement>(null);
 
-    const getRandomPosition = () => {
+    const getRandomPosition = useCallback(() => {
         if (!containerRef.current) return { x: 50, y: 50 };
         const container = containerRef.current.getBoundingClientRect();
         return {
             x: Math.random() * (container.width - 300),
             y: Math.random() * (container.height - 300)
         };
-    };
+    }, []);
 
     const handleMouseDown = (e: React.MouseEvent) => {
         // Проверяем, что нажата левая кнопка мыши (button === 0)
@@ -48,20 +48,18 @@ const BdsmMode: React.FC = () => {
         }
     };
 
-    const handleMouseMove = (e: React.MouseEvent) => {
+    const handleMouseMove = useCallback((e: React.MouseEvent) => {
         if (!isDragging || !containerRef.current) return;
 
-        e.preventDefault(); // Предотвращаем стандартное поведение
+        e.preventDefault();
         
         const container = containerRef.current.getBoundingClientRect();
         
-        // Вычисляем новую позицию с учетом смещения
         const newPletkaPos = {
             x: e.clientX - container.left - dragOffset.current.x,
             y: e.clientY - container.top - dragOffset.current.y
         };
         
-        // Ограничиваем позицию в пределах контейнера
         const maxX = container.width - 200;
         const maxY = container.height - 200;
         
@@ -70,7 +68,6 @@ const BdsmMode: React.FC = () => {
         
         setPletkaPos(newPletkaPos);
 
-        // Проверка расстояния между плеткой и копилкой
         const distance = Math.sqrt(
             Math.pow(newPletkaPos.x - kopilkaPos.x, 2) +
             Math.pow(newPletkaPos.y - kopilkaPos.y, 2)
@@ -78,15 +75,14 @@ const BdsmMode: React.FC = () => {
 
         if (distance < 300) {
             setKopilkaPos(getRandomPosition());
-            // Воспроизводим звук при сближении
             if (audioRef.current) {
-                audioRef.current.currentTime = 0; // Сбрасываем время воспроизведения
+                audioRef.current.currentTime = 0;
                 audioRef.current.play().catch(error => {
                     console.error('Error playing audio:', error);
                 });
             }
         }
-    };
+    }, [isDragging, kopilkaPos, getRandomPosition]);
 
     const handleMouseUp = (e: React.MouseEvent) => {
         // Проверяем, что отпущена левая кнопка мыши
@@ -126,7 +122,7 @@ const BdsmMode: React.FC = () => {
             window.removeEventListener('mousemove', handleMouseMove as any);
             window.removeEventListener('mouseup', handleMouseUp as any);
         };
-    }, [isDragging, kopilkaPos]); // Добавляем зависимости
+    }, [isDragging, kopilkaPos, handleMouseMove]); // Добавляем handleMouseMove в зависимости
 
     return (
         <div className="mode-container" ref={containerRef}>
@@ -149,17 +145,13 @@ const BdsmMode: React.FC = () => {
             )}
             
             {showVideo && (
-                <div className="bdsm-video-intro">
-                    <video 
+                <div className="video-container">
+                    <video
                         ref={videoRef}
-                        className="intro-video"
+                        src="assets/ulta_Slavika.mp4"
+                        controls={false}
                         onEnded={handleVideoEnd}
-                        playsInline
-                        autoPlay
-                    >
-                        <source src="assets/ulta_Slavika.mp4" type="video/mp4" />
-                        Ваш браузер не поддерживает видео
-                    </video>
+                    />
                 </div>
             )}
             
@@ -185,11 +177,11 @@ const BdsmMode: React.FC = () => {
                             left: `${pletkaPos.x}px`,
                             top: `${pletkaPos.y}px`,
                             cursor: isDragging ? 'grabbing' : 'grab',
-                            userSelect: 'none' // Предотвращаем выделение текста при перетаскивании
+                            userSelect: 'none'
                         }}
                         onMouseDown={handleMouseDown}
                     >
-                        <img src="/assets/pletka.png" alt="Плетка" draggable="false" />
+                        <img src="assets/pletka.png" alt="Плетка" draggable="false" />
                     </div>
                     <div 
                         className="target-element kopilka"
@@ -198,7 +190,7 @@ const BdsmMode: React.FC = () => {
                             top: `${kopilkaPos.y}px`
                         }}
                     >
-                        <img src="/assets/kopilka.png" alt="Копилка" draggable="false" />
+                        <img src="assets/kopilka.png" alt="Копилка" draggable="false" />
                     </div>
                 </>
             )}
