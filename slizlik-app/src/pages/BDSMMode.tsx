@@ -4,6 +4,7 @@ import CloudinaryVideo from '../components/CloudinaryVideo';
 
 const BdsmMode: React.FC = () => {
   const [showIntro, setShowIntro] = useState(true);
+  const [showVideoButton, setShowVideoButton] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [showFinalIntro, setShowFinalIntro] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -13,6 +14,11 @@ const BdsmMode: React.FC = () => {
 
   const handleContinue = () => {
     setShowIntro(false);
+    setShowVideoButton(true);
+  };
+
+  const handleVideoStart = () => {
+    setShowVideoButton(false);
     setShowVideo(true);
   };
 
@@ -146,6 +152,18 @@ const BdsmMode: React.FC = () => {
         <p>Даже если у вас есть свои причины, почему вы хотите наказать Славика, я все равно дам еще одну мотивацию.</p>
         <button className="continue-button" onClick={handleContinue}>
           Продолжить
+        </button>
+      </div>
+    );
+  }
+
+  if (showVideoButton) {
+    return (
+      <div className="bdsm-intro">
+        <h1>Посмотри на Славика</h1>
+        <p>Теперь вы увидите, как Славик ведет себя, когда его никто не наказывает.</p>
+        <button className="continue-button" onClick={handleVideoStart}>
+          Покатать на вертолетике
         </button>
       </div>
     );
