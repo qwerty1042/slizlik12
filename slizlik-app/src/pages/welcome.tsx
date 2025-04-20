@@ -13,6 +13,7 @@ interface IntroScreenProps {
 
 const IntroScreen: React.FC<IntroScreenProps> = ({ onReady }) => {
   const [showSplash, setShowSplash] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleStart = () => {
@@ -24,16 +25,11 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onReady }) => {
   };
 
   const handleVideoTest = () => {
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.play().catch(error => {
-        console.error("Ошибка воспроизведения видео:", error);
-      });
-    }
+    setShowVideo(true);
   };
 
   const handleVideoEnd = () => {
-    // Handle video end
+    setShowVideo(false);
   };
 
   if (showSplash) {
@@ -89,14 +85,17 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onReady }) => {
                 Покатать на вертолетике
               </Click>
             </div>
-            <div className="video-wrapper">
-              <CloudinaryVideo
-                publicId="roll_mvmmxr"
-                className="game-video"
-                controls={false}
-                onEnded={handleVideoEnd}
-              />
-            </div>
+            {showVideo && (
+              <div className="video-wrapper">
+                <CloudinaryVideo
+                  publicId="roll_mvmmxr"
+                  className="game-video"
+                  controls={false}
+                  autoPlay={true}
+                  onEnded={handleVideoEnd}
+                />
+              </div>
+            )}
           </div>
         </div>
 
