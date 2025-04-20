@@ -146,16 +146,19 @@ const BdsmMode: React.FC = () => {
             
             {showVideo && (
                 <div className="video-container">
-                    <video
-                        ref={videoRef}
-                        controls={false}
-                        onEnded={handleVideoEnd}
-                        playsInline
-                        preload="auto"
-                    >
-                        <source src="/assets/ulta_Slavika.mp4" type="video/mp4" />
-                        Ваш браузер не поддерживает видео
-                    </video>
+                    <div className="video-wrapper">
+                        <video
+                            ref={videoRef}
+                            className="game-video"
+                            preload="auto"
+                            playsInline
+                            controls={false}
+                            onEnded={handleVideoEnd}
+                        >
+                            <source src="/assets/ulta_Slavika.mp4" type="video/mp4" />
+                            Ваш браузер не поддерживает видео
+                        </video>
+                    </div>
                 </div>
             )}
             

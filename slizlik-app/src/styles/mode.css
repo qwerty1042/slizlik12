@@ -13,21 +13,6 @@
   justify-content: center;
 }
 
-/* Стили для intro-screen */
-.intro-screen {
-  min-height: 100vh;
-  height: 100vh;
-  max-height: 100vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  background-color: #fff;
-  text-align: center;
-}
-
 /* Специальные стили для BDSM режима */
 .bdsm-mode {
   position: absolute;
@@ -96,15 +81,12 @@
   width: 100%;
   max-width: 800px;
   padding: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 0 auto;
 }
 
-.video-container video {
+/* Стили для видео в ClassicMode и SlotMode */
+.video-wrapper {
   width: 100%;
-  height: auto;
-  max-height: 80vh;
   max-width: 800px;
   margin: 0 auto;
   border-radius: 12px;
@@ -116,13 +98,15 @@
   width: 100%;
   height: auto;
   display: block;
+  max-height: 70vh;
+  object-fit: contain;
 }
 
 .slot-video {
   width: 100%;
   height: auto;
   display: block;
-  max-height: 70vh; /* Ограничиваем высоту, чтобы избежать прокрутки */
+  max-height: 70vh;
   object-fit: contain;
 }
 
@@ -435,7 +419,7 @@
 }
 
 /* Стили для карточки в SlotMode */
-.intro-cards .custom-card:has(.slot-video) {
+.intro-cards .custom-card:has(.game-video) {
   width: 100%;
   max-width: 100%;
   margin: 0;
@@ -444,13 +428,13 @@
   box-shadow: none;
 }
 
-.intro-cards .custom-card:has(.slot-video) .card-content {
+.intro-cards .custom-card:has(.game-video) .card-content {
   width: 100%;
   padding: 0;
   margin: 0;
 }
 
-.intro-cards .custom-card:has(.slot-video) .video-wrapper {
+.intro-cards .custom-card:has(.game-video) .video-wrapper {
   max-width: 100%;
   border-radius: 0;
   box-shadow: none;

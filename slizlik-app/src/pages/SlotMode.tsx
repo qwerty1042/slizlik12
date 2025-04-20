@@ -44,11 +44,12 @@ const SlotMode: React.FC = () => {
             <div className="video-wrapper">
               <video 
                 ref={videoRef}
-                className="slot-video" 
+                className="game-video"
                 autoPlay 
                 loop
                 playsInline
                 muted
+                preload="auto"
               >
                 <source src="/assets/drochka_2.mp4" type="video/mp4" />
                 Ваш браузер не поддерживает видео
