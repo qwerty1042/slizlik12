@@ -46,7 +46,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onReady }) => {
       </motion.h1>
 
       <p className="intro-subtitle">
-        Прежде чем начать, давай убедимся, что у тебя работает звук и видео:
+        Прежде чем начать, давай убедимся, что у тебя всё работает:
       </p>
 
       <div className="intro-cards">
@@ -91,7 +91,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onReady }) => {
                 playsInline
                 muted
               >
-                <source src="/assets/roll.mp4" type="video/mp4" />
+                <source src={`${process.env.PUBLIC_URL}/assets/roll.mp4`} type="video/mp4" />
                 Ваш браузер не поддерживает видео
               </video>
             </div>
