@@ -1,204 +1,206 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../styles/mode.css';
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/mode.css";
 import CloudinaryVideo from '../components/CloudinaryVideo';
 
-interface Position {
-    x: number;
-    y: number;
-}
-
 const BdsmMode: React.FC = () => {
-    const navigate = useNavigate();
-    const [kopilkaPos, setKopilkaPos] = useState<Position>({ x: 50, y: 50 });
-    const [pletkaPos, setPletkaPos] = useState<Position>({ x: 0, y: 0 });
-    const [isDragging, setIsDragging] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const dragOffset = useRef<Position>({ x: 0, y: 0 });
-    const [showIntro, setShowIntro] = useState(true);
-    const [showVideo, setShowVideo] = useState(false);
-    const [showFinalIntro, setShowFinalIntro] = useState(false);
-    const [showGame, setShowGame] = useState(false);
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const audioRef = useRef<HTMLAudioElement>(null);
+  const navigate = useNavigate();
+  const [showVideo, setShowVideo] = useState(false);
+  const [showFinalScreen, setShowFinalScreen] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
 
-    const getRandomPosition = useCallback(() => {
-        if (!containerRef.current) return { x: 50, y: 50 };
-        const container = containerRef.current.getBoundingClientRect();
-        return {
-            x: Math.random() * (container.width - 300),
-            y: Math.random() * (container.height - 300)
-        };
-    }, []);
+  useEffect(() => {
+    if (containerRef.current) {
+      setContainerSize({
+        width: containerRef.current.offsetWidth,
+        height: containerRef.current.offsetHeight
+      });
+    }
+  }, []);
 
-    const handleMouseDown = (e: React.MouseEvent) => {
-        // Проверяем, что нажата левая кнопка мыши (button === 0)
-        if (e.button !== 0) return;
-        
-        e.preventDefault(); // Предотвращаем стандартное поведение
-        
-        const container = containerRef.current?.getBoundingClientRect();
-        if (container) {
-            // Сохраняем смещение курсора относительно центра плетки
-            dragOffset.current = {
-                x: e.clientX - container.left - pletkaPos.x,
-                y: e.clientY - container.top - pletkaPos.y
-            };
-            
-            setIsDragging(true);
-        }
+  const handleContinue = () => {
+    setShowVideo(true);
+  };
+
+  const handleVideoEnd = () => {
+    setShowVideo(false);
+    setShowFinalScreen(true);
+  };
+
+  const getRandomPosition = () => {
+    if (!containerRef.current) return { x: 0, y: 0 };
+    const container = containerRef.current.getBoundingClientRect();
+    return {
+      x: Math.random() * (container.width - 200),
+      y: Math.random() * (container.height - 200)
+    };
+  };
+
+  useEffect(() => {
+    setPosition(getRandomPosition());
+  }, []);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0) return; // Only respond to left mouse button
+    setIsDragging(true);
+    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    setDragOffset({
+      x: e.clientX - rect.left - rect.width / 2,
+      y: e.clientY - rect.top - rect.height / 2
+    });
+    e.preventDefault();
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    const container = containerRef.current?.getBoundingClientRect();
+    if (!container) return;
+
+    const newX = e.clientX - container.left - dragOffset.x;
+    const newY = e.clientY - container.top - dragOffset.y;
+
+    // Keep within bounds
+    const maxX = container.width - 200;
+    const maxY = container.height - 200;
+
+    setPosition({
+      x: Math.max(0, Math.min(newX, maxX)),
+      y: Math.max(0, Math.min(newY, maxY))
+    });
+  };
+
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (e.button === 0) {
+      setIsDragging(false);
+    }
+  };
+
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (!isDragging) return;
+      const container = containerRef.current?.getBoundingClientRect();
+      if (!container) return;
+
+      const newX = e.clientX - container.left - dragOffset.x;
+      const newY = e.clientY - container.top - dragOffset.y;
+
+      // Keep within bounds
+      const maxX = container.width - 200;
+      const maxY = container.height - 200;
+
+      setPosition({
+        x: Math.max(0, Math.min(newX, maxX)),
+        y: Math.max(0, Math.min(newY, maxY))
+      });
     };
 
-    const handleMouseMove = useCallback((e: React.MouseEvent) => {
-        if (!isDragging || !containerRef.current) return;
-
-        e.preventDefault();
-        
-        const container = containerRef.current.getBoundingClientRect();
-        
-        const newPletkaPos = {
-            x: e.clientX - container.left - dragOffset.current.x,
-            y: e.clientY - container.top - dragOffset.current.y
-        };
-        
-        const maxX = container.width - 200;
-        const maxY = container.height - 200;
-        
-        newPletkaPos.x = Math.max(0, Math.min(newPletkaPos.x, maxX));
-        newPletkaPos.y = Math.max(0, Math.min(newPletkaPos.y, maxY));
-        
-        setPletkaPos(newPletkaPos);
-
-        const distance = Math.sqrt(
-            Math.pow(newPletkaPos.x - kopilkaPos.x, 2) +
-            Math.pow(newPletkaPos.y - kopilkaPos.y, 2)
-        );
-
-        if (distance < 300) {
-            setKopilkaPos(getRandomPosition());
-            if (audioRef.current) {
-                audioRef.current.currentTime = 0;
-                audioRef.current.play().catch(error => {
-                    console.error('Error playing audio:', error);
-                });
-            }
-        }
-    }, [isDragging, kopilkaPos, getRandomPosition]);
-
-    const handleMouseUp = (e: React.MouseEvent) => {
-        // Проверяем, что отпущена левая кнопка мыши
-        if (e.button === 0) {
-            setIsDragging(false);
-        }
+    const handleGlobalMouseUp = (e: MouseEvent) => {
+      if (e.button === 0) {
+        setIsDragging(false);
+      }
     };
 
-    const handleContinue = () => {
-        setShowIntro(false);
-        setShowVideo(true);
-        
-        // Добавляем автоматическое воспроизведение видео
-        if (videoRef.current) {
-            videoRef.current.play().catch(error => {
-                console.error('Error playing video:', error);
-            });
-        }
+    if (isDragging) {
+      window.addEventListener('mousemove', handleGlobalMouseMove);
+      window.addEventListener('mouseup', handleGlobalMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleGlobalMouseMove);
+      window.removeEventListener('mouseup', handleGlobalMouseUp);
     };
+  }, [isDragging, dragOffset]);
 
-    const handleVideoEnd = () => {
-        setShowVideo(false);
-        setShowFinalIntro(true);
-    };
+  const handleClick = () => {
+    const draggableElement = document.querySelector('.draggable-element');
+    const targetElement = document.querySelector('.target-element');
+    
+    if (draggableElement && targetElement) {
+      const draggableRect = draggableElement.getBoundingClientRect();
+      const targetRect = targetElement.getBoundingClientRect();
+      
+      const draggableCenter = {
+        x: draggableRect.left + draggableRect.width / 2,
+        y: draggableRect.top + draggableRect.height / 2
+      };
+      
+      const targetCenter = {
+        x: targetRect.left + targetRect.width / 2,
+        y: targetRect.top + targetRect.height / 2
+      };
+      
+      const distance = Math.sqrt(
+        Math.pow(draggableCenter.x - targetCenter.x, 2) +
+        Math.pow(draggableCenter.y - targetCenter.y, 2)
+      );
+      
+      if (distance < 300) {
+        setPosition(getRandomPosition());
+      }
+    }
+  };
 
-    const handleStartGame = () => {
-        setShowFinalIntro(false);
-        setShowGame(true);
-    };
-
-    useEffect(() => {
-        // Добавляем обработчики на window для отслеживания движения мыши за пределами элемента
-        window.addEventListener('mousemove', handleMouseMove as any);
-        window.addEventListener('mouseup', handleMouseUp as any);
-        
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove as any);
-            window.removeEventListener('mouseup', handleMouseUp as any);
-        };
-    }, [isDragging, kopilkaPos, handleMouseMove]); // Добавляем handleMouseMove в зависимости
-
+  if (showVideo) {
     return (
-        <div className="mode-container" ref={containerRef}>
-            <audio ref={audioRef} src="/assets/slaviku-horosho.mp3" preload="auto" />
-            <button 
-                className="exit-button"
-                onClick={() => navigate('/home')}
-            >
-                Выйти
-            </button>
-            {showIntro && (
-                <div className="bdsm-intro">
-                    <h1>BDSM Mode</h1>
-                    <p>Добро пожаловать в BDSM-комнату!</p>
-                    <p>Даже если у вас есть свои причины, почему вы хотите наказать Славика, я все равно дам еще одну мотивацию.</p>
-                    <button className="continue-button" onClick={handleContinue}>
-                        Продолжить
-                    </button>
-                </div>
-            )}
-            
-            {showVideo && (
-                <div className="video-container">
-                    <div className="video-wrapper">
-                        <CloudinaryVideo
-                            publicId="ulta_Slavika_n1ee6q"
-                            className="game-video"
-                            controls={false}
-                            onEnded={handleVideoEnd}
-                        />
-                    </div>
-                </div>
-            )}
-            
-            {showFinalIntro && (
-                <div className="bdsm-intro final-intro">
-                    <h1>Пора наказать Славика!</h1>
-                    <p>Теперь ты можете перетащить плетку на копилку.</p>
-                    <p>Каждый раз, когда плетка будет касатся копилки, Славик будет убегать.</p>
-                    <p>Чтобы взять плетку зажми левую кнопку мыши. Далее догоняй слызлыка</p>
-                    <p>Попробуй поймать его!</p>
-                    <button className="continue-button" onClick={handleStartGame}>
-                        Начать...
-                    </button>
-                </div>
-            )}
-            
-            {showGame && (
-                <>
-                    <div className="bdsm-mode"></div>
-                    <div 
-                        className="draggable-element pletka"
-                        style={{
-                            left: `${pletkaPos.x}px`,
-                            top: `${pletkaPos.y}px`,
-                            cursor: isDragging ? 'grabbing' : 'grab',
-                            userSelect: 'none'
-                        }}
-                        onMouseDown={handleMouseDown}
-                    >
-                        <img src="/assets/pletka.png" alt="Плетка" draggable="false" />
-                    </div>
-                    <div 
-                        className="target-element kopilka"
-                        style={{
-                            left: `${kopilkaPos.x}px`,
-                            top: `${kopilkaPos.y}px`
-                        }}
-                    >
-                        <img src="/assets/kopilka.png" alt="Копилка" draggable="false" />
-                    </div>
-                </>
-            )}
-        </div>
+      <div className="video-wrapper">
+        <CloudinaryVideo
+          publicId="ulta_Slavika"
+          className="game-video"
+          controls={false}
+          autoPlay={true}
+          onEnded={handleVideoEnd}
+        />
+      </div>
     );
+  }
+
+  if (showFinalScreen) {
+    return (
+      <div className="final-screen">
+        <h1>Поздравляем!</h1>
+        <p>Вы успешно прошли BDSM режим!</p>
+        <button onClick={() => navigate('/')}>Вернуться на главную</button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bdsm-mode">
+      <div className="game-container" ref={containerRef}>
+        <img
+          src="assets/pletka.png"
+          className="draggable-element"
+          style={{
+            left: `${position.x}px`,
+            top: `${position.y}px`,
+            cursor: isDragging ? 'grabbing' : 'grab'
+          }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onClick={handleClick}
+          draggable="false"
+        />
+        <img
+          src="assets/kopilka.png"
+          className="target-element"
+          style={{
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)'
+          }}
+          draggable="false"
+        />
+      </div>
+      <button className="continue-button" onClick={handleContinue}>
+        Продолжить
+      </button>
+    </div>
+  );
 };
 
 export default BdsmMode; 
