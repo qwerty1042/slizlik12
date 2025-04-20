@@ -2,29 +2,29 @@
   "version": 2,
   "builds": [
     {
-      "src": "package.json",
+      "src": "slizlik-app/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "build"
+        "distDir": "slizlik-app/build"
       }
     }
   ],
   "routes": [
     {
       "src": "/static/(.*)",
-      "dest": "/static/$1"
+      "dest": "/slizlik-app/build/static/$1"
     },
     {
       "src": "/assets/(.*)",
-      "dest": "/assets/$1"
+      "dest": "/slizlik-app/public/assets/$1"
     },
     {
       "src": "/favicon.ico",
-      "dest": "/favicon.ico"
+      "dest": "/slizlik-app/public/favicon.ico"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/slizlik-app/build/index.html"
     }
   ],
   "rewrites": [
