@@ -12,13 +12,13 @@ const Home: React.FC = () => {
         
         <div className="cards-container">
           <Card
-            title="Классический режим"
+            title="Нашампурить Славика"
             ps="Нашампурь Славика от души"
             image="/assets/classic.jpg"
             mode="classic"
           />
           <Card
-            title="BDSM режим"
+            title="BDSM"
             ps="Хочешь наказать Славика?"
             image="/assets/bdsm2.jpg"
             mode="bdsm"

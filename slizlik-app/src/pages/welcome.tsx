@@ -1,22 +1,39 @@
-import React from "react";
-import { Volume2, AlertTriangle } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { Volume2, AlertTriangle, Video } from "lucide-react";
 import { motion } from "framer-motion";
 import "../styles/introScreen.css";
 import "../styles/button.css"
 import Click from "../components/click";
+import SplashScreen from "../components/SplashScreen";
 
 interface IntroScreenProps {
   onReady: () => void;
 }
 
 const IntroScreen: React.FC<IntroScreenProps> = ({ onReady }) => {
+  const [showSplash, setShowSplash] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   const handleStart = () => {
     const audio = new Audio("/assets/welcome.mp3");
-  audio.play().catch(error => {
-    console.error("Ошибка воспроизведения звука:", error);
-  });
-    onReady();
+    audio.play().catch(error => {
+      console.error("Ошибка воспроизведения звука:", error);
+    });
+    setShowSplash(true);
   };
+
+  const handleVideoTest = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(error => {
+        console.error("Ошибка воспроизведения видео:", error);
+      });
+    }
+  };
+
+  if (showSplash) {
+    return <SplashScreen />;
+  }
 
   return (
     <div className="intro-screen">
@@ -29,20 +46,17 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onReady }) => {
       </motion.h1>
 
       <p className="intro-subtitle">
-        Прежде чем начать, давай убедимся, что у тебя работает звук:
+        Прежде чем начать, давай убедимся, что у тебя работает звук и видео:
       </p>
 
       <div className="intro-cards">
         <div className="custom-card">
           <div className="card-content">
-           
             <div className="card-icon">
               <Volume2 size={24} />
-             
             </div>
             <p>При нажатии на кнопку ты услышишь звук</p>
             <div className="custom-button">
-            
               <Click
                 soundSrc="/assets/click.mp3"
                 mode="classic"
@@ -57,10 +71,40 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onReady }) => {
         <div className="custom-card">
           <div className="card-content">
             <div className="card-icon">
+              <Video size={24} />
+            </div>
+            <p>При нажатии на кнопку ты увидишь анимацию</p>
+            <div className="custom-button">
+              <Click
+                soundSrc=""
+                mode="classic"
+                className="sound-button"
+                onClick={handleVideoTest}
+              >
+                Покатать на вертолетике
+              </Click>
+            </div>
+            <div className="video-test-container">
+              <video
+                ref={videoRef}
+                className="video-test"
+                playsInline
+                muted
+              >
+                <source src="/assets/roll.mp4" type="video/mp4" />
+                Ваш браузер не поддерживает видео
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <div className="custom-card">
+          <div className="card-content">
+            <div className="card-icon">
               <AlertTriangle size={24} />
             </div>
             <div className="card-text">
-              Внимание: если у тебя не работает звук, то нашампуривание не вызовет зависимость
+              Внимание: если у тебя не работает звук и/или анимация, то нашампуривание не вызовет зависимость
             </div>
           </div>
         </div>

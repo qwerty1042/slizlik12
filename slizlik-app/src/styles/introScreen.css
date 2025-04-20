@@ -66,6 +66,8 @@
     align-items: center;
     width: 100%;
     gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
 }
   
 .card-icon {
@@ -103,5 +105,24 @@
 .intro-start-button:disabled {
     background-color: #9ca3af;
     cursor: not-allowed;
+}
+  
+.video-test-container {
+    width: 200px;
+    height: 150px;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: none;
+    background-color: transparent;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.video-test {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }
   
