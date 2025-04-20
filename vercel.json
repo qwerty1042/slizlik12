@@ -9,32 +9,22 @@
       }
     }
   ],
-  "routes": [
-    {
-      "src": "/static/(.*)",
-      "dest": "/slizlik-app/build/static/$1"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/slizlik-app/public/assets/$1"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/slizlik-app/public/favicon.ico"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/slizlik-app/build/index.html"
-    }
-  ],
   "rewrites": [
     {
-      "source": "/assets/:path*",
-      "destination": "/assets/:path*"
+      "source": "/static/(.*)",
+      "destination": "/slizlik-app/build/static/$1"
+    },
+    {
+      "source": "/assets/(.*)",
+      "destination": "/slizlik-app/public/assets/$1"
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "/slizlik-app/public/favicon.ico"
     },
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "/slizlik-app/build/index.html"
     }
   ]
 }
