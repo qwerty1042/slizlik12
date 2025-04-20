@@ -5,20 +5,28 @@ import CloudinaryVideo from '../components/CloudinaryVideo';
 
 const BdsmMode: React.FC = () => {
   const navigate = useNavigate();
+  const [showIntro, setShowIntro] = useState(true);
   const [showVideo, setShowVideo] = useState(false);
-  const [showFinalScreen, setShowFinalScreen] = useState(false);
+  const [showFinalIntro, setShowFinalIntro] = useState(false);
+  const [showGame, setShowGame] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleContinue = () => {
+    setShowIntro(false);
     setShowVideo(true);
   };
 
   const handleVideoEnd = () => {
     setShowVideo(false);
-    setShowFinalScreen(true);
+    setShowFinalIntro(true);
+  };
+
+  const handleStartGame = () => {
+    setShowFinalIntro(false);
+    setShowGame(true);
   };
 
   const getRandomPosition = () => {
@@ -134,26 +142,46 @@ const BdsmMode: React.FC = () => {
     }
   };
 
-  if (showVideo) {
+  if (showIntro) {
     return (
-      <div className="video-wrapper">
-        <CloudinaryVideo
-          publicId="ulta_Slavika"
-          className="game-video"
-          controls={false}
-          autoPlay={true}
-          onEnded={handleVideoEnd}
-        />
+      <div className="bdsm-intro">
+        <h1>BDSM Mode</h1>
+        <p>Добро пожаловать в BDSM-комнату!</p>
+        <p>Даже если у вас есть свои причины, почему вы хотите наказать Славика, я все равно дам еще одну мотивацию.</p>
+        <button className="continue-button" onClick={handleContinue}>
+          Продолжить
+        </button>
       </div>
     );
   }
 
-  if (showFinalScreen) {
+  if (showVideo) {
     return (
-      <div className="final-screen">
-        <h1>Поздравляем!</h1>
-        <p>Вы успешно прошли BDSM режим!</p>
-        <button onClick={() => navigate('/')}>Вернуться на главную</button>
+      <div className="video-container">
+        <div className="video-wrapper">
+          <CloudinaryVideo
+            publicId="ulta_Slavika"
+            className="game-video"
+            controls={false}
+            autoPlay={true}
+            onEnded={handleVideoEnd}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (showFinalIntro) {
+    return (
+      <div className="bdsm-intro final-intro">
+        <h1>Пора наказать Славика!</h1>
+        <p>Теперь ты можете перетащить плетку на копилку.</p>
+        <p>Каждый раз, когда плетка будет касатся копилки, Славик будет убегать.</p>
+        <p>Чтобы взять плетку зажми левую кнопку мыши. Далее догоняй слызлыка</p>
+        <p>Попробуй поймать его!</p>
+        <button className="continue-button" onClick={handleStartGame}>
+          Начать...
+        </button>
       </div>
     );
   }
@@ -188,9 +216,6 @@ const BdsmMode: React.FC = () => {
           draggable="false"
         />
       </div>
-      <button className="continue-button" onClick={handleContinue}>
-        Продолжить
-      </button>
     </div>
   );
 };
