@@ -96,11 +96,15 @@
   width: 100%;
   max-width: 800px;
   padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Стили для видео в ClassicMode и SlotMode */
-.video-wrapper {
+.video-container video {
   width: 100%;
+  height: auto;
+  max-height: 80vh;
   max-width: 800px;
   margin: 0 auto;
   border-radius: 12px;

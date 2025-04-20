@@ -148,10 +148,14 @@ const BdsmMode: React.FC = () => {
                 <div className="video-container">
                     <video
                         ref={videoRef}
-                        src="/assets/ulta_Slavika.mp4"
                         controls={false}
                         onEnded={handleVideoEnd}
-                    />
+                        playsInline
+                        preload="auto"
+                    >
+                        <source src="/assets/ulta_Slavika.mp4" type="video/mp4" />
+                        Ваш браузер не поддерживает видео
+                    </video>
                 </div>
             )}
             
@@ -181,7 +185,7 @@ const BdsmMode: React.FC = () => {
                         }}
                         onMouseDown={handleMouseDown}
                     >
-                        <img src={`${process.env.PUBLIC_URL}/assets/pletka.png`} alt="Плетка" draggable="false" />
+                        <img src="/assets/pletka.png" alt="Плетка" draggable="false" />
                     </div>
                     <div 
                         className="target-element kopilka"
@@ -190,7 +194,7 @@ const BdsmMode: React.FC = () => {
                             top: `${kopilkaPos.y}px`
                         }}
                     >
-                        <img src={`${process.env.PUBLIC_URL}/assets/kopilka.png`} alt="Копилка" draggable="false" />
+                        <img src="/assets/kopilka.png" alt="Копилка" draggable="false" />
                     </div>
                 </>
             )}
