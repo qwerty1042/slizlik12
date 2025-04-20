@@ -91,7 +91,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onReady }) => {
                 playsInline
                 muted
               >
-                <source src={`${process.env.PUBLIC_URL}/assets/roll.mp4`} type="video/mp4" />
+                <source src="/assets/roll.mp4" type="video/mp4" />
                 Ваш браузер не поддерживает видео
               </video>
             </div>

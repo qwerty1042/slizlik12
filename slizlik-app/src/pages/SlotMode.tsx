@@ -50,7 +50,7 @@ const SlotMode: React.FC = () => {
                 playsInline
                 muted
               >
-                <source src={`${process.env.PUBLIC_URL}/assets/drochka_2.mp4`} type="video/mp4" />
+                <source src="/assets/drochka_2.mp4" type="video/mp4" />
                 Ваш браузер не поддерживает видео
               </video>
             </div>

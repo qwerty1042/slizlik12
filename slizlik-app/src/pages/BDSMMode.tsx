@@ -126,7 +126,7 @@ const BdsmMode: React.FC = () => {
 
     return (
         <div className="mode-container" ref={containerRef}>
-            <audio ref={audioRef} src={`${process.env.PUBLIC_URL}/assets/slaviku-horosho.mp3`} preload="auto" />
+            <audio ref={audioRef} src="/assets/slaviku-horosho.mp3" preload="auto" />
             <button 
                 className="exit-button"
                 onClick={() => navigate('/home')}
@@ -148,7 +148,7 @@ const BdsmMode: React.FC = () => {
                 <div className="video-container">
                     <video
                         ref={videoRef}
-                        src={`${process.env.PUBLIC_URL}/assets/ulta_Slavika.mp4`}
+                        src="/assets/ulta_Slavika.mp4"
                         controls={false}
                         onEnded={handleVideoEnd}
                     />
