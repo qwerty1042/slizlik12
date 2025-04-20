@@ -1,0 +1,33 @@
+/* ui/Card.css */
+
+.custom-card {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.card-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card-icon {
+    font-size: 24px;
+    color: #4f46e5;
+    flex-shrink: 0;
+}
+
+.card-text {
+    font-size: 1.1rem;
+    color: #333;
+    flex-grow: 1;
+}
+
+.card-action {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}

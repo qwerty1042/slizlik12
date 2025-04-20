@@ -1,0 +1,3 @@
+Внимание: при создании пострадал лишь один Славик, остальные в порядке
+mkEN2HXFxFAomypw
+mongodb+srv://qqqqqq3904:mkEN2HXFxFAomypw@clusterslizlik.mgn071t.mongodb.net/?retryWrites=true&w=majority&appName=clusterSlizlik
