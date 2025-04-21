@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "../styles/mode.css";
 import "../styles/introScreen.css";
 import "../styles/button.css";
 import { Video, X } from "lucide-react";
-import CloudinaryVideo from '../components/CloudinaryVideo';
 import { useNavigate } from "react-router-dom";
 
 const BdsmMode: React.FC = () => {
@@ -128,7 +127,7 @@ const BdsmMode: React.FC = () => {
   };
 
   // Функция для проверки расстояния между плеткой и копилкой
-  const checkDistance = (whipPosition: { x: number, y: number }) => {
+  const checkDistance = useCallback((whipPosition: { x: number, y: number }) => {
     const targetElement = document.querySelector('.target-element');
     if (!targetElement) return;
     
@@ -169,7 +168,7 @@ const BdsmMode: React.FC = () => {
       // Перемещаем копилку в случайное место
       setPiggyPosition(getRandomPosition());
     }
-  };
+  }, []);
 
   useEffect(() => {
     const handleGlobalMouseMove = (e: MouseEvent) => {
