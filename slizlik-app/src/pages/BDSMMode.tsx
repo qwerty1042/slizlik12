@@ -14,7 +14,6 @@ const BdsmMode: React.FC = () => {
   const [showFinalIntro, setShowFinalIntro] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [piggyPosition, setPiggyPosition] = useState({ x: 0, y: 0 });
   const [hitCount, setHitCount] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -77,11 +76,6 @@ const BdsmMode: React.FC = () => {
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button !== 0) return; // Only respond to left mouse button
     setIsDragging(true);
-    const rect = (e.target as HTMLElement).getBoundingClientRect();
-    setDragOffset({
-      x: e.clientX - rect.left - rect.width / 2,
-      y: e.clientY - rect.top - rect.height / 2
-    });
     e.preventDefault();
   };
 
