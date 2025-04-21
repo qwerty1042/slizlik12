@@ -49,6 +49,8 @@ const BdsmMode: React.FC = () => {
     // Предзагрузка видео
     if (videoRef.current) {
       videoRef.current.load();
+      // Устанавливаем громкость на 50%
+      videoRef.current.volume = 0.5;
     }
   };
 
@@ -166,7 +168,7 @@ const BdsmMode: React.FC = () => {
       window.removeEventListener('mousemove', handleGlobalMouseMove);
       window.removeEventListener('mouseup', handleGlobalMouseUp);
     };
-  }, [isDragging, dragOffset]);
+  }, [isDragging, dragOffset, checkDistance]);
 
   // Функция для проверки расстояния между плеткой и копилкой
   const checkDistance = (whipPosition: { x: number, y: number }) => {
@@ -281,13 +283,16 @@ const BdsmMode: React.FC = () => {
                   padding: '10px'
                 }}>
                   <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <CloudinaryVideo
-                      publicId="ulta_Slavika_pmpcnd"
+                    <video
+                      ref={videoRef}
                       className="game-video"
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                      src="https://res.cloudinary.com/drochka/video/upload/v1710864000/ulta_Slavika_pmpcnd.mp4"
                       controls={false}
                       autoPlay={true}
                       onEnded={handleVideoEnd}
                       loop={false}
+                      volume={0.5}
                     />
                   </div>
                 </div>
