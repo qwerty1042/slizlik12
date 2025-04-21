@@ -74,19 +74,6 @@ const BdsmMode: React.FC = () => {
     navigate('/home');
   };
 
-  const getRandomPosition = () => {
-    if (!containerRef.current) return { x: 0, y: 0 };
-    const container = containerRef.current.getBoundingClientRect();
-    return {
-      x: Math.random() * (container.width - 200),
-      y: Math.random() * (container.height - 200)
-    };
-  };
-
-  useEffect(() => {
-    setPosition(getRandomPosition());
-  }, []);
-
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button !== 0) return; // Only respond to left mouse button
     setIsDragging(true);
@@ -103,12 +90,13 @@ const BdsmMode: React.FC = () => {
     const container = containerRef.current?.getBoundingClientRect();
     if (!container) return;
 
-    const newX = e.clientX - container.left - dragOffset.x;
-    const newY = e.clientY - container.top - dragOffset.y;
+    // Убираем dragOffset для более точного следования за мышью
+    const newX = e.clientX - container.left;
+    const newY = e.clientY - container.top;
 
     // Keep within bounds
-    const maxX = container.width - 200;
-    const maxY = container.height - 200;
+    const maxX = container.width - 150; // Изменено с 200 на 150 для размера плетки
+    const maxY = container.height - 150;
 
     const newPosition = {
       x: Math.max(0, Math.min(newX, maxX)),
@@ -127,6 +115,43 @@ const BdsmMode: React.FC = () => {
     }
   };
 
+  // Функция для получения случайной позиции с учетом размеров контейнера и объектов
+  const getRandomPosition = useCallback(() => {
+    if (!containerRef.current) return { x: 0, y: 0 };
+    const container = containerRef.current.getBoundingClientRect();
+    
+    // Учитываем размеры копилки (250px) при генерации позиции
+    const maxX = container.width - 250;
+    const maxY = container.height - 250;
+    
+    // Получаем текущую позицию плетки
+    const whipPos = position;
+    
+    // Генерируем новую позицию на противоположной стороне от плетки
+    let newX, newY;
+    
+    if (whipPos.x < container.width / 2) {
+      // Если плетка слева, помещаем копилку справа
+      newX = Math.random() * (maxX / 2) + maxX / 2;
+    } else {
+      // Если плетка справа, помещаем копилку слева
+      newX = Math.random() * (maxX / 2);
+    }
+    
+    if (whipPos.y < container.height / 2) {
+      // Если плетка сверху, помещаем копилку снизу
+      newY = Math.random() * (maxY / 2) + maxY / 2;
+    } else {
+      // Если плетка снизу, помещаем копилку сверху
+      newY = Math.random() * (maxY / 2);
+    }
+    
+    return {
+      x: Math.max(0, Math.min(newX, maxX)),
+      y: Math.max(0, Math.min(newY, maxY))
+    };
+  }, [position]);
+
   // Функция для проверки расстояния между плеткой и копилкой
   const checkDistance = useCallback((whipPosition: { x: number, y: number }) => {
     const targetElement = document.querySelector('.target-element');
@@ -137,8 +162,8 @@ const BdsmMode: React.FC = () => {
     if (!container) return;
     
     const whipCenter = {
-      x: whipPosition.x + 75, // Половина ширины плетки
-      y: whipPosition.y + 75  // Примерная половина высоты плетки
+      x: whipPosition.x + 75,
+      y: whipPosition.y + 75
     };
     
     const targetCenter = {
@@ -151,8 +176,9 @@ const BdsmMode: React.FC = () => {
       Math.pow(whipCenter.y - targetCenter.y, 2)
     );
     
-    if (distance < 200) {
-      // Воспроизводим звуки
+    // Уменьшаем дистанцию срабатывания и добавляем задержку перед следующим перемещением
+    if (distance < 150) {
+      // Воспроизводим звук
       if (whipSoundRef.current) {
         whipSoundRef.current.currentTime = 0;
         whipSoundRef.current.play().catch(err => console.error('Error playing whip sound:', err));
@@ -166,10 +192,11 @@ const BdsmMode: React.FC = () => {
       // Увеличиваем счетчик попаданий
       setHitCount(prev => prev + 1);
       
-      // Перемещаем копилку в случайное место
-      setPiggyPosition(getRandomPosition());
+      // Перемещаем копилку в новое случайное место
+      const newPosition = getRandomPosition();
+      setPiggyPosition(newPosition);
     }
-  }, []);
+  }, [getRandomPosition]);
 
   useEffect(() => {
     const handleGlobalMouseMove = (e: MouseEvent) => {
@@ -177,12 +204,13 @@ const BdsmMode: React.FC = () => {
       const container = containerRef.current?.getBoundingClientRect();
       if (!container) return;
 
-      const newX = e.clientX - container.left - dragOffset.x;
-      const newY = e.clientY - container.top - dragOffset.y;
+      // Убираем dragOffset для более точного следования за мышью
+      const newX = e.clientX - container.left;
+      const newY = e.clientY - container.top;
 
       // Keep within bounds
-      const maxX = container.width - 200;
-      const maxY = container.height - 200;
+      const maxX = container.width - 150;
+      const maxY = container.height - 150;
 
       const newPosition = {
         x: Math.max(0, Math.min(newX, maxX)),
@@ -210,7 +238,7 @@ const BdsmMode: React.FC = () => {
       window.removeEventListener('mousemove', handleGlobalMouseMove);
       window.removeEventListener('mouseup', handleGlobalMouseUp);
     };
-  }, [isDragging, dragOffset, checkDistance]);
+  }, [isDragging, checkDistance]);
 
   const handleClick = () => {
     // Проверяем расстояние при клике
@@ -246,15 +274,17 @@ const BdsmMode: React.FC = () => {
         <button className="exit-button" onClick={handleExit}>
           <X size={24} />
         </button>
-        <div className="intro-cards" style={{ width: '100%', maxWidth: '100%' }}>
+        <div className="intro-cards" style={{ width: '100vw', maxWidth: '100vw', margin: 0, padding: 0 }}>
           <div className="custom-card" style={{ 
             width: '100%', 
             maxWidth: '100%', 
+            margin: 0,
             padding: 0,
             background: 'rgba(255, 255, 255, 0.05)',
-            backdropFilter: 'blur(5px)'
+            backdropFilter: 'blur(5px)',
+            border: 'none'
           }}>
-            <div className="card-content" style={{ width: '100%', padding: 0 }}>
+            <div className="card-content" style={{ width: '100%', margin: 0, padding: 0 }}>
               <div className="card-icon">
                 <Video size={24} />
               </div>
@@ -278,14 +308,14 @@ const BdsmMode: React.FC = () => {
               </button>
               {showVideo && (
                 <div className="video-wrapper" style={{ 
-                  width: '90vw', 
-                  maxWidth: '1200px', 
-                  margin: '0 auto',
+                  width: '100vw', 
+                  maxWidth: '100vw', 
+                  margin: 0,
                   height: '70vh',
                   maxHeight: '800px',
-                  background: 'rgba(0, 0, 0, 0.3)',
-                  borderRadius: '10px',
-                  padding: '10px'
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  padding: '0',
+                  border: 'none'
                 }}>
                   <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <CloudinaryVideo
@@ -392,14 +422,16 @@ const BdsmMode: React.FC = () => {
         />
         <div style={{
           position: 'absolute',
-          top: '20px',
-          right: '20px',
+          top: '30px',
+          left: '50%',
+          transform: 'translateX(-50%)',
           background: 'rgba(0, 0, 0, 0.5)',
           color: 'white',
           padding: '10px',
           borderRadius: '5px',
           fontSize: '18px',
-          zIndex: 20
+          zIndex: 20,
+          fontWeight: 'bold'
         }}>
           Попаданий: {hitCount}
         </div>
