@@ -181,16 +181,19 @@ const BdsmMode: React.FC = () => {
         Math.pow(draggableCenter.y - targetCenter.y, 2)
       );
       
-      if (distance < 150) {
+      console.log('Distance between whip and piggy:', distance);
+      
+      if (distance < 200) {
+        console.log('Hit detected!');
         // Воспроизводим звуки
         if (whipSoundRef.current) {
           whipSoundRef.current.currentTime = 0;
-          whipSoundRef.current.play();
+          whipSoundRef.current.play().catch(err => console.error('Error playing whip sound:', err));
         }
         
         if (screamSoundRef.current) {
           screamSoundRef.current.currentTime = 0;
-          screamSoundRef.current.play();
+          screamSoundRef.current.play().catch(err => console.error('Error playing scream sound:', err));
         }
         
         // Увеличиваем счетчик попаданий
@@ -272,7 +275,6 @@ const BdsmMode: React.FC = () => {
                       controls={false}
                       autoPlay={true}
                       onEnded={handleVideoEnd}
-                      muted={true}
                       loop={false}
                     />
                   </div>
@@ -335,6 +337,7 @@ const BdsmMode: React.FC = () => {
           position: 'relative',
           overflow: 'hidden'
         }}
+        onClick={handleClick}
       >
         <img
           src="assets/pletka.png"
@@ -352,7 +355,6 @@ const BdsmMode: React.FC = () => {
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
-          onClick={handleClick}
           draggable="false"
         />
         <img

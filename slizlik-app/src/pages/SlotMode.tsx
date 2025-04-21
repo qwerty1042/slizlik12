@@ -75,15 +75,14 @@ const SlotMode: React.FC = () => {
               maxHeight: '800px',
               background: 'rgba(0, 0, 0, 0.5)',
               borderRadius: '10px',
-              padding: '10px'
+              padding: '0'
             }}>
               <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <CloudinaryVideo
                   publicId="drochka_2_ud7cqb"
                   className="game-video"
                   autoPlay
-                  loop
-                  muted
+                  loop={true}
                 />
               </div>
             </div>
