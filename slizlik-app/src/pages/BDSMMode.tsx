@@ -18,21 +18,14 @@ const BdsmMode: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const whipSoundRef = useRef<HTMLAudioElement | null>(null);
-  const screamSoundRef = useRef<HTMLAudioElement | null>(null);
 
-  // Инициализация звуков
   useEffect(() => {
-    whipSoundRef.current = new Audio('/assets/hlist.mp3');
-    screamSoundRef.current = new Audio('/assets/scream.mp3');
+    whipSoundRef.current = new Audio('/assets/slaviku-horosho.mp3');
     
     return () => {
       if (whipSoundRef.current) {
         whipSoundRef.current.pause();
         whipSoundRef.current = null;
-      }
-      if (screamSoundRef.current) {
-        screamSoundRef.current.pause();
-        screamSoundRef.current = null;
       }
     };
   }, []);
@@ -44,7 +37,6 @@ const BdsmMode: React.FC = () => {
 
   const handleVideoStart = () => {
     setShowVideo(true);
-    // Предзагрузка видео
     if (videoRef.current) {
       videoRef.current.load();
     }
@@ -58,7 +50,6 @@ const BdsmMode: React.FC = () => {
 
   const handleStartGame = () => {
     setShowFinalIntro(false);
-    // Устанавливаем начальную позицию копилки в центре
     if (containerRef.current) {
       const container = containerRef.current.getBoundingClientRect();
       setPiggyPosition({
@@ -73,7 +64,7 @@ const BdsmMode: React.FC = () => {
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.button !== 0) return; // Only respond to left mouse button
+    if (e.button !== 0) return;
     setIsDragging(true);
     e.preventDefault();
   };
@@ -83,12 +74,10 @@ const BdsmMode: React.FC = () => {
     const container = containerRef.current?.getBoundingClientRect();
     if (!container) return;
 
-    // Убираем dragOffset для более точного следования за мышью
     const newX = e.clientX - container.left;
     const newY = e.clientY - container.top;
 
-    // Keep within bounds
-    const maxX = container.width - 150; // Изменено с 200 на 150 для размера плетки
+    const maxX = container.width - 150;
     const maxY = container.height - 150;
 
     const newPosition = {
@@ -97,8 +86,6 @@ const BdsmMode: React.FC = () => {
     };
     
     setPosition(newPosition);
-    
-    // Проверяем расстояние до копилки при каждом движении
     checkDistance(newPosition);
   };
 
@@ -108,44 +95,33 @@ const BdsmMode: React.FC = () => {
     }
   };
 
-  // Функция для получения случайной позиции с учетом размеров контейнера и объектов
   const getRandomPosition = useCallback(() => {
     if (!containerRef.current) return { x: 0, y: 0 };
     const container = containerRef.current.getBoundingClientRect();
-    
-    // Учитываем размеры копилки (250px) при генерации позиции
     const maxX = container.width - 250;
     const maxY = container.height - 250;
-    
-    // Получаем текущую позицию плетки
+
     const whipPos = position;
-    
-    // Генерируем новую позицию на противоположной стороне от плетки
+
     let newX, newY;
-    
     if (whipPos.x < container.width / 2) {
-      // Если плетка слева, помещаем копилку справа
       newX = Math.random() * (maxX / 2) + maxX / 2;
     } else {
-      // Если плетка справа, помещаем копилку слева
       newX = Math.random() * (maxX / 2);
     }
-    
+
     if (whipPos.y < container.height / 2) {
-      // Если плетка сверху, помещаем копилку снизу
       newY = Math.random() * (maxY / 2) + maxY / 2;
     } else {
-      // Если плетка снизу, помещаем копилку сверху
       newY = Math.random() * (maxY / 2);
     }
-    
+
     return {
       x: Math.max(0, Math.min(newX, maxX)),
       y: Math.max(0, Math.min(newY, maxY))
     };
   }, [position]);
 
-  // Функция для проверки расстояния между плеткой и копилкой
   const checkDistance = useCallback((whipPosition: { x: number, y: number }) => {
     const targetElement = document.querySelector('.target-element');
     if (!targetElement) return;
@@ -169,20 +145,12 @@ const BdsmMode: React.FC = () => {
       Math.pow(whipCenter.y - targetCenter.y, 2)
     );
     
-    // Уменьшаем дистанцию срабатывания и добавляем задержку перед следующим перемещением
     if (distance < 150) {
-      // Воспроизводим звук
       if (whipSoundRef.current) {
         whipSoundRef.current.currentTime = 0;
-        whipSoundRef.current.play().catch(err => console.error('Error playing whip sound:', err));
+        whipSoundRef.current.play().catch(err => console.error('Error playing sound:', err));
       }
-      
-      if (screamSoundRef.current) {
-        screamSoundRef.current.currentTime = 0;
-        screamSoundRef.current.play().catch(err => console.error('Error playing scream sound:', err));
-      }
-      
-      // Перемещаем копилку в новое случайное место
+
       const newPosition = getRandomPosition();
       setPiggyPosition(newPosition);
     }
@@ -194,11 +162,9 @@ const BdsmMode: React.FC = () => {
       const container = containerRef.current?.getBoundingClientRect();
       if (!container) return;
 
-      // Убираем dragOffset для более точного следования за мышью
       const newX = e.clientX - container.left;
       const newY = e.clientY - container.top;
 
-      // Keep within bounds
       const maxX = container.width - 150;
       const maxY = container.height - 150;
 
@@ -208,8 +174,6 @@ const BdsmMode: React.FC = () => {
       };
       
       setPosition(newPosition);
-      
-      // Проверяем расстояние до копилки при каждом движении
       checkDistance(newPosition);
     };
 
@@ -231,16 +195,16 @@ const BdsmMode: React.FC = () => {
   }, [isDragging, checkDistance]);
 
   const handleClick = () => {
-    // Проверяем расстояние при клике
     checkDistance(position);
   };
 
-  // Добавляем эффект для установки громкости видео
   useEffect(() => {
     if (videoRef.current && showVideo) {
-      videoRef.current.volume = 0.5; // Устанавливаем громкость на 50%
+      videoRef.current.volume = 0.5;
     }
   }, [showVideo]);
+
+
 
   if (showIntro) {
     return (
