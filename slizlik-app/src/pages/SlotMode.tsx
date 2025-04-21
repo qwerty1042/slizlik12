@@ -59,14 +59,23 @@ const SlotMode: React.FC = () => {
       </p>
 
       <div className="intro-cards" style={{ width: '100%', maxWidth: '100%' }}>
-        <div className="custom-card" style={{ width: '100%', maxWidth: '100%', padding: 0 }}>
+        <div className="custom-card" style={{ 
+          width: '100%', 
+          maxWidth: '100%', 
+          padding: 0,
+          background: 'rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(5px)'
+        }}>
           <div className="card-content" style={{ width: '100%', padding: 0 }}>
             <div className="video-wrapper" style={{ 
               width: '90vw', 
               maxWidth: '1200px', 
               margin: '0 auto',
               height: '70vh',
-              maxHeight: '800px'
+              maxHeight: '800px',
+              background: 'rgba(0, 0, 0, 0.5)',
+              borderRadius: '10px',
+              padding: '10px'
             }}>
               <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <CloudinaryVideo

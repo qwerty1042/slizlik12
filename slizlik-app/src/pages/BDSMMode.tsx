@@ -15,7 +15,29 @@ const BdsmMode: React.FC = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [piggyPosition, setPiggyPosition] = useState({ x: 0, y: 0 });
+  const [hitCount, setHitCount] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const whipSoundRef = useRef<HTMLAudioElement | null>(null);
+  const screamSoundRef = useRef<HTMLAudioElement | null>(null);
+
+  // Инициализация звуков
+  useEffect(() => {
+    whipSoundRef.current = new Audio('/assets/whip.mp3');
+    screamSoundRef.current = new Audio('/assets/scream.mp3');
+    
+    return () => {
+      if (whipSoundRef.current) {
+        whipSoundRef.current.pause();
+        whipSoundRef.current = null;
+      }
+      if (screamSoundRef.current) {
+        screamSoundRef.current.pause();
+        screamSoundRef.current = null;
+      }
+    };
+  }, []);
 
   const handleContinue = () => {
     setShowIntro(false);
@@ -24,6 +46,10 @@ const BdsmMode: React.FC = () => {
 
   const handleVideoStart = () => {
     setShowVideo(true);
+    // Предзагрузка видео
+    if (videoRef.current) {
+      videoRef.current.load();
+    }
   };
 
   const handleVideoEnd = () => {
@@ -34,6 +60,14 @@ const BdsmMode: React.FC = () => {
 
   const handleStartGame = () => {
     setShowFinalIntro(false);
+    // Устанавливаем начальную позицию копилки в центре
+    if (containerRef.current) {
+      const container = containerRef.current.getBoundingClientRect();
+      setPiggyPosition({
+        x: container.width / 2 - 50,
+        y: container.height / 2 - 50
+      });
+    }
   };
 
   const handleExit = () => {
@@ -44,8 +78,8 @@ const BdsmMode: React.FC = () => {
     if (!containerRef.current) return { x: 0, y: 0 };
     const container = containerRef.current.getBoundingClientRect();
     return {
-      x: Math.random() * (container.width - 100),
-      y: Math.random() * (container.height - 100)
+      x: Math.random() * (container.width - 200),
+      y: Math.random() * (container.height - 200)
     };
   };
 
@@ -73,8 +107,8 @@ const BdsmMode: React.FC = () => {
     const newY = e.clientY - container.top - dragOffset.y;
 
     // Keep within bounds
-    const maxX = container.width - 100;
-    const maxY = container.height - 100;
+    const maxX = container.width - 200;
+    const maxY = container.height - 200;
 
     setPosition({
       x: Math.max(0, Math.min(newX, maxX)),
@@ -98,8 +132,8 @@ const BdsmMode: React.FC = () => {
       const newY = e.clientY - container.top - dragOffset.y;
 
       // Keep within bounds
-      const maxX = container.width - 100;
-      const maxY = container.height - 100;
+      const maxX = container.width - 200;
+      const maxY = container.height - 200;
 
       setPosition({
         x: Math.max(0, Math.min(newX, maxX)),
@@ -147,8 +181,23 @@ const BdsmMode: React.FC = () => {
         Math.pow(draggableCenter.y - targetCenter.y, 2)
       );
       
-      if (distance < 300) {
-        setPosition(getRandomPosition());
+      if (distance < 150) {
+        // Воспроизводим звуки
+        if (whipSoundRef.current) {
+          whipSoundRef.current.currentTime = 0;
+          whipSoundRef.current.play();
+        }
+        
+        if (screamSoundRef.current) {
+          screamSoundRef.current.currentTime = 0;
+          screamSoundRef.current.play();
+        }
+        
+        // Увеличиваем счетчик попаданий
+        setHitCount(prev => prev + 1);
+        
+        // Перемещаем копилку в случайное место
+        setPiggyPosition(getRandomPosition());
       }
     }
   };
@@ -176,12 +225,17 @@ const BdsmMode: React.FC = () => {
           <X size={24} />
         </button>
         <div className="intro-cards" style={{ width: '100%', maxWidth: '100%' }}>
-          <div className="custom-card" style={{ width: '100%', maxWidth: '100%', padding: 0 }}>
+          <div className="custom-card" style={{ 
+            width: '100%', 
+            maxWidth: '100%', 
+            padding: 0,
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(5px)'
+          }}>
             <div className="card-content" style={{ width: '100%', padding: 0 }}>
               <div className="card-icon">
                 <Video size={24} />
               </div>
-              <p>Получить мотивацию</p>
               <button
                 className="sound-button"
                 onClick={handleVideoStart}
@@ -198,7 +252,7 @@ const BdsmMode: React.FC = () => {
                   display: 'inline-block'
                 }}
               >
-                Покатать на вертолетике
+                Получить мотивацию
               </button>
               {showVideo && (
                 <div className="video-wrapper" style={{ 
@@ -206,7 +260,10 @@ const BdsmMode: React.FC = () => {
                   maxWidth: '1200px', 
                   margin: '0 auto',
                   height: '70vh',
-                  maxHeight: '800px'
+                  maxHeight: '800px',
+                  background: 'rgba(0, 0, 0, 0.5)',
+                  borderRadius: '10px',
+                  padding: '10px'
                 }}>
                   <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <CloudinaryVideo
@@ -215,6 +272,9 @@ const BdsmMode: React.FC = () => {
                       controls={false}
                       autoPlay={true}
                       onEnded={handleVideoEnd}
+                      muted={true}
+                      loop={false}
+                      preload="auto"
                     />
                   </div>
                 </div>
@@ -286,7 +346,7 @@ const BdsmMode: React.FC = () => {
             left: `${position.x}px`,
             top: `${position.y}px`,
             cursor: isDragging ? 'grabbing' : 'grab',
-            width: '100px',
+            width: '150px',
             height: 'auto',
             zIndex: 10
           }}
@@ -302,15 +362,27 @@ const BdsmMode: React.FC = () => {
           className="target-element"
           style={{
             position: 'absolute',
-            left: '50%',
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '100px',
+            left: `${piggyPosition.x}px`,
+            top: `${piggyPosition.y}px`,
+            width: '250px',
             height: 'auto',
             zIndex: 5
           }}
           draggable="false"
         />
+        <div style={{
+          position: 'absolute',
+          top: '20px',
+          left: '20px',
+          background: 'rgba(0, 0, 0, 0.5)',
+          color: 'white',
+          padding: '10px',
+          borderRadius: '5px',
+          fontSize: '18px',
+          zIndex: 20
+        }}>
+          Попаданий: {hitCount}
+        </div>
       </div>
     </div>
   );
