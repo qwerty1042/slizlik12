@@ -129,47 +129,6 @@ const BdsmMode: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      if (!isDragging) return;
-      const container = containerRef.current?.getBoundingClientRect();
-      if (!container) return;
-
-      const newX = e.clientX - container.left - dragOffset.x;
-      const newY = e.clientY - container.top - dragOffset.y;
-
-      // Keep within bounds
-      const maxX = container.width - 200;
-      const maxY = container.height - 200;
-
-      const newPosition = {
-        x: Math.max(0, Math.min(newX, maxX)),
-        y: Math.max(0, Math.min(newY, maxY))
-      };
-      
-      setPosition(newPosition);
-      
-      // Проверяем расстояние до копилки при каждом движении
-      checkDistance(newPosition);
-    };
-
-    const handleGlobalMouseUp = (e: MouseEvent) => {
-      if (e.button === 0) {
-        setIsDragging(false);
-      }
-    };
-
-    if (isDragging) {
-      window.addEventListener('mousemove', handleGlobalMouseMove);
-      window.addEventListener('mouseup', handleGlobalMouseUp);
-    }
-
-    return () => {
-      window.removeEventListener('mousemove', handleGlobalMouseMove);
-      window.removeEventListener('mouseup', handleGlobalMouseUp);
-    };
-  }, [isDragging, dragOffset, checkDistance]);
-
   // Функция для проверки расстояния между плеткой и копилкой
   const checkDistance = (whipPosition: { x: number, y: number }) => {
     const targetElement = document.querySelector('.target-element');
@@ -213,6 +172,47 @@ const BdsmMode: React.FC = () => {
       setPiggyPosition(getRandomPosition());
     }
   };
+
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (!isDragging) return;
+      const container = containerRef.current?.getBoundingClientRect();
+      if (!container) return;
+
+      const newX = e.clientX - container.left - dragOffset.x;
+      const newY = e.clientY - container.top - dragOffset.y;
+
+      // Keep within bounds
+      const maxX = container.width - 200;
+      const maxY = container.height - 200;
+
+      const newPosition = {
+        x: Math.max(0, Math.min(newX, maxX)),
+        y: Math.max(0, Math.min(newY, maxY))
+      };
+      
+      setPosition(newPosition);
+      
+      // Проверяем расстояние до копилки при каждом движении
+      checkDistance(newPosition);
+    };
+
+    const handleGlobalMouseUp = (e: MouseEvent) => {
+      if (e.button === 0) {
+        setIsDragging(false);
+      }
+    };
+
+    if (isDragging) {
+      window.addEventListener('mousemove', handleGlobalMouseMove);
+      window.addEventListener('mouseup', handleGlobalMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleGlobalMouseMove);
+      window.removeEventListener('mouseup', handleGlobalMouseUp);
+    };
+  }, [isDragging, dragOffset, checkDistance]);
 
   const handleClick = () => {
     // Проверяем расстояние при клике
