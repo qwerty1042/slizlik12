@@ -19,7 +19,7 @@ const SlotMode: React.FC = () => {
   }, []);
 
   const handleExit = () => {
-    navigate('/');
+    navigate('/home');
   };
 
   return (
@@ -58,17 +58,25 @@ const SlotMode: React.FC = () => {
         Ничего нажимать не нужно, просто наслаждайся
       </p>
 
-      <div className="intro-cards">
-        <div className="custom-card">
-          <div className="card-content">
-            <div className="video-wrapper" style={{ width: '80vw', maxWidth: '800px', margin: '0 auto' }}>
-              <CloudinaryVideo
-                publicId="drochka_2_ud7cqb"
-                className="game-video"
-                autoPlay
-                loop
-                muted
-              />
+      <div className="intro-cards" style={{ width: '100%', maxWidth: '100%' }}>
+        <div className="custom-card" style={{ width: '100%', maxWidth: '100%', padding: 0 }}>
+          <div className="card-content" style={{ width: '100%', padding: 0 }}>
+            <div className="video-wrapper" style={{ 
+              width: '90vw', 
+              maxWidth: '1200px', 
+              margin: '0 auto',
+              height: '70vh',
+              maxHeight: '800px'
+            }}>
+              <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <CloudinaryVideo
+                  publicId="drochka_2_ud7cqb"
+                  className="game-video"
+                  autoPlay
+                  loop
+                  muted
+                />
+              </div>
             </div>
           </div>
         </div>

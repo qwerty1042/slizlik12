@@ -37,7 +37,7 @@ const BdsmMode: React.FC = () => {
   };
 
   const handleExit = () => {
-    navigate('/');
+    navigate('/home');
   };
 
   const getRandomPosition = () => {
@@ -175,30 +175,48 @@ const BdsmMode: React.FC = () => {
         <button className="exit-button" onClick={handleExit}>
           <X size={24} />
         </button>
-        <div className="intro-cards">
-          <div className="custom-card">
-            <div className="card-content">
+        <div className="intro-cards" style={{ width: '100%', maxWidth: '100%' }}>
+          <div className="custom-card" style={{ width: '100%', maxWidth: '100%', padding: 0 }}>
+            <div className="card-content" style={{ width: '100%', padding: 0 }}>
               <div className="card-icon">
                 <Video size={24} />
               </div>
-              <p>При нажатии на кнопку ты увидишь анимацию</p>
-              <div className="custom-button">
-                <button
-                  className="sound-button"
-                  onClick={handleVideoStart}
-                >
-                  Покатать на вертолетике
-                </button>
-              </div>
+              <p>Получить мотивацию</p>
+              <button
+                className="sound-button"
+                onClick={handleVideoStart}
+                style={{
+                  padding: '10px 20px',
+                  fontSize: '16px',
+                  backgroundColor: '#4f46e5',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  margin: '10px 0',
+                  width: 'auto',
+                  display: 'inline-block'
+                }}
+              >
+                Покатать на вертолетике
+              </button>
               {showVideo && (
-                <div className="video-wrapper" style={{ width: '80vw', maxWidth: '800px', margin: '0 auto' }}>
-                  <CloudinaryVideo
-                    publicId="ulta_Slavika"
-                    className="game-video"
-                    controls={false}
-                    autoPlay={true}
-                    onEnded={handleVideoEnd}
-                  />
+                <div className="video-wrapper" style={{ 
+                  width: '90vw', 
+                  maxWidth: '1200px', 
+                  margin: '0 auto',
+                  height: '70vh',
+                  maxHeight: '800px'
+                }}>
+                  <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <CloudinaryVideo
+                      publicId="ulta_Slavika"
+                      className="game-video"
+                      controls={false}
+                      autoPlay={true}
+                      onEnded={handleVideoEnd}
+                    />
+                  </div>
                 </div>
               )}
             </div>
