@@ -24,7 +24,7 @@ const BdsmMode: React.FC = () => {
 
   // Инициализация звуков
   useEffect(() => {
-    whipSoundRef.current = new Audio('/assets/whip.mp3');
+    whipSoundRef.current = new Audio('/assets/hlist.mp3');
     screamSoundRef.current = new Audio('/assets/scream.mp3');
     
     return () => {
@@ -110,10 +110,15 @@ const BdsmMode: React.FC = () => {
     const maxX = container.width - 200;
     const maxY = container.height - 200;
 
-    setPosition({
+    const newPosition = {
       x: Math.max(0, Math.min(newX, maxX)),
       y: Math.max(0, Math.min(newY, maxY))
-    });
+    };
+    
+    setPosition(newPosition);
+    
+    // Проверяем расстояние до копилки при каждом движении
+    checkDistance(newPosition);
   };
 
   const handleMouseUp = (e: React.MouseEvent) => {
@@ -135,10 +140,15 @@ const BdsmMode: React.FC = () => {
       const maxX = container.width - 200;
       const maxY = container.height - 200;
 
-      setPosition({
+      const newPosition = {
         x: Math.max(0, Math.min(newX, maxX)),
         y: Math.max(0, Math.min(newY, maxY))
-      });
+      };
+      
+      setPosition(newPosition);
+      
+      // Проверяем расстояние до копилки при каждом движении
+      checkDistance(newPosition);
     };
 
     const handleGlobalMouseUp = (e: MouseEvent) => {
@@ -158,51 +168,53 @@ const BdsmMode: React.FC = () => {
     };
   }, [isDragging, dragOffset]);
 
-  const handleClick = () => {
-    const draggableElement = document.querySelector('.draggable-element');
+  // Функция для проверки расстояния между плеткой и копилкой
+  const checkDistance = (whipPosition: { x: number, y: number }) => {
     const targetElement = document.querySelector('.target-element');
+    if (!targetElement) return;
     
-    if (draggableElement && targetElement) {
-      const draggableRect = draggableElement.getBoundingClientRect();
-      const targetRect = targetElement.getBoundingClientRect();
-      
-      const draggableCenter = {
-        x: draggableRect.left + draggableRect.width / 2,
-        y: draggableRect.top + draggableRect.height / 2
-      };
-      
-      const targetCenter = {
-        x: targetRect.left + targetRect.width / 2,
-        y: targetRect.top + targetRect.height / 2
-      };
-      
-      const distance = Math.sqrt(
-        Math.pow(draggableCenter.x - targetCenter.x, 2) +
-        Math.pow(draggableCenter.y - targetCenter.y, 2)
-      );
-      
-      console.log('Distance between whip and piggy:', distance);
-      
-      if (distance < 200) {
-        console.log('Hit detected!');
-        // Воспроизводим звуки
-        if (whipSoundRef.current) {
-          whipSoundRef.current.currentTime = 0;
-          whipSoundRef.current.play().catch(err => console.error('Error playing whip sound:', err));
-        }
-        
-        if (screamSoundRef.current) {
-          screamSoundRef.current.currentTime = 0;
-          screamSoundRef.current.play().catch(err => console.error('Error playing scream sound:', err));
-        }
-        
-        // Увеличиваем счетчик попаданий
-        setHitCount(prev => prev + 1);
-        
-        // Перемещаем копилку в случайное место
-        setPiggyPosition(getRandomPosition());
+    const targetRect = targetElement.getBoundingClientRect();
+    const container = containerRef.current?.getBoundingClientRect();
+    if (!container) return;
+    
+    const whipCenter = {
+      x: whipPosition.x + 75, // Половина ширины плетки
+      y: whipPosition.y + 75  // Примерная половина высоты плетки
+    };
+    
+    const targetCenter = {
+      x: targetRect.left - container.left + targetRect.width / 2,
+      y: targetRect.top - container.top + targetRect.height / 2
+    };
+    
+    const distance = Math.sqrt(
+      Math.pow(whipCenter.x - targetCenter.x, 2) +
+      Math.pow(whipCenter.y - targetCenter.y, 2)
+    );
+    
+    if (distance < 200) {
+      // Воспроизводим звуки
+      if (whipSoundRef.current) {
+        whipSoundRef.current.currentTime = 0;
+        whipSoundRef.current.play().catch(err => console.error('Error playing whip sound:', err));
       }
+      
+      if (screamSoundRef.current) {
+        screamSoundRef.current.currentTime = 0;
+        screamSoundRef.current.play().catch(err => console.error('Error playing scream sound:', err));
+      }
+      
+      // Увеличиваем счетчик попаданий
+      setHitCount(prev => prev + 1);
+      
+      // Перемещаем копилку в случайное место
+      setPiggyPosition(getRandomPosition());
     }
+  };
+
+  const handleClick = () => {
+    // Проверяем расстояние при клике
+    checkDistance(position);
   };
 
   if (showIntro) {
@@ -374,7 +386,7 @@ const BdsmMode: React.FC = () => {
         <div style={{
           position: 'absolute',
           top: '20px',
-          left: '20px',
+          right: '20px',
           background: 'rgba(0, 0, 0, 0.5)',
           color: 'white',
           padding: '10px',
