@@ -3,6 +3,7 @@ import "../styles/mode.css";
 import "../styles/introScreen.css";
 import "../styles/button.css";
 import { Video, X } from "lucide-react";
+import CloudinaryVideo from '../components/CloudinaryVideo';
 import { useNavigate } from "react-router-dom";
 
 const BdsmMode: React.FC = () => {
@@ -250,7 +251,7 @@ const BdsmMode: React.FC = () => {
             width: '100%', 
             maxWidth: '100%', 
             padding: 0,
-            background: 'rgba(255, 255, 255, 0.1)',
+            background: 'rgba(255, 255, 255, 0.05)',
             backdropFilter: 'blur(5px)'
           }}>
             <div className="card-content" style={{ width: '100%', padding: 0 }}>
@@ -282,16 +283,14 @@ const BdsmMode: React.FC = () => {
                   margin: '0 auto',
                   height: '70vh',
                   maxHeight: '800px',
-                  background: 'rgba(0, 0, 0, 0.5)',
+                  background: 'rgba(0, 0, 0, 0.3)',
                   borderRadius: '10px',
                   padding: '10px'
                 }}>
                   <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <video
-                      ref={videoRef}
+                    <CloudinaryVideo
+                      publicId="ulta_Slavika_pmpcnd"
                       className="game-video"
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                      src="https://res.cloudinary.com/drochka/video/upload/v1710864000/ulta_Slavika_pmpcnd.mp4"
                       controls={false}
                       autoPlay={true}
                       onEnded={handleVideoEnd}

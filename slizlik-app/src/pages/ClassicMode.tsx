@@ -91,10 +91,25 @@ const ClassicMode: React.FC = () => {
         Нашампурь Славика от души! Цель: {CLICK_GOAL} кликов
       </p>
 
-      <div className="intro-cards">
-        <div className="custom-card">
-          <div className="card-content">
-            <div className="video-wrapper">
+      <div className="intro-cards" style={{ width: '100%', maxWidth: '100%' }}>
+        <div className="custom-card" style={{ 
+          width: '100%', 
+          maxWidth: '100%', 
+          padding: 0,
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(5px)'
+        }}>
+          <div className="card-content" style={{ width: '100%', padding: 0 }}>
+            <div className="video-wrapper" style={{ 
+              width: '90vw', 
+              maxWidth: '1200px', 
+              margin: '0 auto',
+              height: '70vh',
+              maxHeight: '800px',
+              background: 'rgba(0, 0, 0, 0.3)',
+              borderRadius: '10px',
+              padding: '0'
+            }}>
               <video
                 ref={videoRef}
                 className="game-video"

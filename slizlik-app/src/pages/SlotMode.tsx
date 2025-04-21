@@ -63,7 +63,7 @@ const SlotMode: React.FC = () => {
           width: '100%', 
           maxWidth: '100%', 
           padding: 0,
-          background: 'rgba(255, 255, 255, 0.1)',
+          background: 'rgba(255, 255, 255, 0.05)',
           backdropFilter: 'blur(5px)'
         }}>
           <div className="card-content" style={{ width: '100%', padding: 0 }}>
@@ -73,7 +73,7 @@ const SlotMode: React.FC = () => {
               margin: '0 auto',
               height: '70vh',
               maxHeight: '800px',
-              background: 'rgba(0, 0, 0, 0.5)',
+              background: 'rgba(0, 0, 0, 0.3)',
               borderRadius: '10px',
               padding: '0'
             }}>
