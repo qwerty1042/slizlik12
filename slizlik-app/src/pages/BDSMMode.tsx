@@ -274,7 +274,6 @@ const BdsmMode: React.FC = () => {
                       onEnded={handleVideoEnd}
                       muted={true}
                       loop={false}
-                      preload="auto"
                     />
                   </div>
                 </div>
