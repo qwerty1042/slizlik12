@@ -106,7 +106,7 @@ const ClassicMode: React.FC = () => {
               width: '100vw', 
               maxWidth: '100vw', 
               margin: 0,
-              height: '70vh',
+              height: '50vh',
               maxHeight: '800px',
               background: 'rgba(255, 255, 255, 0.05)',
               padding: '0',
@@ -118,22 +118,58 @@ const ClassicMode: React.FC = () => {
                 preload="auto"
                 playsInline
                 aria-label="Game preview video"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain'
+                }}
               >
                 <source src="/assets/1_kebab.mp4" type="video/mp4" />
                 Ваш браузер не поддерживает видео
               </video>
             </div>
             
-            <div className="game-controls">
-              <div className="clicks-counter">
+            <div className="game-controls" style={{
+              padding: '10px 0',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '10px'
+            }}>
+              <div className="clicks-counter" style={{
+                fontSize: '18px',
+                fontWeight: 'bold',
+                color: 'white'
+              }}>
                 Количество кликов: {clicks}
               </div>
-              <div className="progress-container">
+              <div className="progress-container" style={{
+                width: '80%',
+                maxWidth: '400px',
+                background: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: '10px',
+                padding: '3px',
+                margin: '5px 0'
+              }}>
                 <div 
                   className="progress-bar" 
-                  style={{ width: `${progress}%` }}
+                  style={{ 
+                    background: 'linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%)',
+                    height: '20px',
+                    borderRadius: '8px',
+                    transition: 'width 0.3s ease',
+                    width: `${progress}%`
+                  }}
                 >
-                  <span className="progress-text">
+                  <span className="progress-text" style={{
+                    color: 'white',
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    display: 'block',
+                    lineHeight: '20px',
+                    textAlign: 'center',
+                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)'
+                  }}>
                     {progress.toFixed(1)}%
                   </span>
                 </div>
@@ -141,6 +177,18 @@ const ClassicMode: React.FC = () => {
               <button 
                 className="click-button"
                 onClick={handleClick}
+                style={{
+                  padding: '10px 20px',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  backgroundColor: '#4f46e5',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+                }}
               >
                 Нашампурить
               </button>

@@ -15,7 +15,6 @@ const BdsmMode: React.FC = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [piggyPosition, setPiggyPosition] = useState({ x: 0, y: 0 });
-  const [hitCount, setHitCount] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const whipSoundRef = useRef<HTMLAudioElement | null>(null);
@@ -183,9 +182,6 @@ const BdsmMode: React.FC = () => {
         screamSoundRef.current.play().catch(err => console.error('Error playing scream sound:', err));
       }
       
-      // Увеличиваем счетчик попаданий
-      setHitCount(prev => prev + 1);
-      
       // Перемещаем копилку в новое случайное место
       const newPosition = getRandomPosition();
       setPiggyPosition(newPosition);
@@ -351,7 +347,7 @@ const BdsmMode: React.FC = () => {
   return (
     <div className="bdsm-mode" style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
       <button 
-        className="exit-button" 
+        className="exit-button-bdsm" 
         onClick={handleExit}
         style={{ 
           position: 'absolute', 
@@ -366,11 +362,30 @@ const BdsmMode: React.FC = () => {
           alignItems: 'center',
           justifyContent: 'center',
           border: 'none',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          transition: 'all 0.3s ease',
+          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
         }}
       >
-        <X size={24} />
+        <X 
+          size={24} 
+          color="#333"
+          style={{
+            strokeWidth: 2.5
+          }}
+        />
       </button>
+
+      <style>
+        {`
+          .exit-button-bdsm:hover {
+            background: rgba(255, 255, 255, 0.9) !important;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+          }
+        `}
+      </style>
+
       <div 
         className="game-container" 
         ref={containerRef}
@@ -414,21 +429,6 @@ const BdsmMode: React.FC = () => {
           }}
           draggable="false"
         />
-        <div style={{
-          position: 'absolute',
-          top: '30px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: 'rgba(0, 0, 0, 0.5)',
-          color: 'white',
-          padding: '10px',
-          borderRadius: '5px',
-          fontSize: '18px',
-          zIndex: 20,
-          fontWeight: 'bold'
-        }}>
-          Попаданий: {hitCount}
-        </div>
       </div>
     </div>
   );
