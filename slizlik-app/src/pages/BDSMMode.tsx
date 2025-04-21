@@ -49,8 +49,6 @@ const BdsmMode: React.FC = () => {
     // Предзагрузка видео
     if (videoRef.current) {
       videoRef.current.load();
-      // Устанавливаем громкость на 50%
-      videoRef.current.volume = 0.5;
     }
   };
 
@@ -219,6 +217,13 @@ const BdsmMode: React.FC = () => {
     checkDistance(position);
   };
 
+  // Добавляем эффект для установки громкости видео
+  useEffect(() => {
+    if (videoRef.current && showVideo) {
+      videoRef.current.volume = 0.5; // Устанавливаем громкость на 50%
+    }
+  }, [showVideo]);
+
   if (showIntro) {
     return (
       <div className="bdsm-intro">
@@ -292,7 +297,6 @@ const BdsmMode: React.FC = () => {
                       autoPlay={true}
                       onEnded={handleVideoEnd}
                       loop={false}
-                      volume={0.5}
                     />
                   </div>
                 </div>
