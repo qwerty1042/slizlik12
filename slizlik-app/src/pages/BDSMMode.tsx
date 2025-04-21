@@ -210,7 +210,7 @@ const BdsmMode: React.FC = () => {
                 }}>
                   <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <CloudinaryVideo
-                      publicId="ulta_Slavika"
+                      publicId="ulta_Slavika_pmpcnd"
                       className="game-video"
                       controls={false}
                       autoPlay={true}
