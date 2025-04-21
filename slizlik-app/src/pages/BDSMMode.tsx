@@ -2,10 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import "../styles/mode.css";
 import "../styles/introScreen.css";
 import "../styles/button.css";
-import { Video } from "lucide-react";
+import { Video, X } from "lucide-react";
 import CloudinaryVideo from '../components/CloudinaryVideo';
+import { useNavigate } from "react-router-dom";
 
 const BdsmMode: React.FC = () => {
+  const navigate = useNavigate();
   const [showIntro, setShowIntro] = useState(true);
   const [showVideoButton, setShowVideoButton] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
@@ -32,6 +34,10 @@ const BdsmMode: React.FC = () => {
 
   const handleStartGame = () => {
     setShowFinalIntro(false);
+  };
+
+  const handleExit = () => {
+    navigate('/');
   };
 
   const getRandomPosition = () => {
@@ -150,6 +156,9 @@ const BdsmMode: React.FC = () => {
   if (showIntro) {
     return (
       <div className="bdsm-intro">
+        <button className="exit-button" onClick={handleExit}>
+          <X size={24} />
+        </button>
         <h1>BDSM Mode</h1>
         <p>Добро пожаловать в BDSM-комнату!</p>
         <p>Даже если у вас есть свои причины, почему вы хотите наказать Славика, я все равно дам еще одну мотивацию.</p>
@@ -163,6 +172,9 @@ const BdsmMode: React.FC = () => {
   if (showVideoButton) {
     return (
       <div className="intro-screen">
+        <button className="exit-button" onClick={handleExit}>
+          <X size={24} />
+        </button>
         <div className="intro-cards">
           <div className="custom-card">
             <div className="card-content">
@@ -179,7 +191,7 @@ const BdsmMode: React.FC = () => {
                 </button>
               </div>
               {showVideo && (
-                <div className="video-wrapper">
+                <div className="video-wrapper" style={{ width: '80vw', maxWidth: '800px', margin: '0 auto' }}>
                   <CloudinaryVideo
                     publicId="ulta_Slavika"
                     className="game-video"
@@ -199,6 +211,9 @@ const BdsmMode: React.FC = () => {
   if (showFinalIntro) {
     return (
       <div className="bdsm-intro final-intro">
+        <button className="exit-button" onClick={handleExit}>
+          <X size={24} />
+        </button>
         <h1>Пора наказать Славика!</h1>
         <p>Теперь ты можете перетащить плетку на копилку.</p>
         <p>Каждый раз, когда плетка будет касатся копилки, Славик будет убегать.</p>
@@ -213,6 +228,27 @@ const BdsmMode: React.FC = () => {
 
   return (
     <div className="bdsm-mode" style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
+      <button 
+        className="exit-button" 
+        onClick={handleExit}
+        style={{ 
+          position: 'absolute', 
+          top: '20px', 
+          right: '20px', 
+          zIndex: 100,
+          background: 'rgba(255, 255, 255, 0.7)',
+          borderRadius: '50%',
+          width: '40px',
+          height: '40px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          border: 'none',
+          cursor: 'pointer'
+        }}
+      >
+        <X size={24} />
+      </button>
       <div 
         className="game-container" 
         ref={containerRef}

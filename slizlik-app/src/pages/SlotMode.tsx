@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { X } from 'lucide-react';
 import '../styles/mode.css';
 import '../styles/introScreen.css';
 import CloudinaryVideo from '../components/CloudinaryVideo';
@@ -17,14 +18,32 @@ const SlotMode: React.FC = () => {
     }
   }, []);
 
-  const handleBack = () => {
-    navigate('/home');
+  const handleExit = () => {
+    navigate('/');
   };
 
   return (
     <div className="intro-screen">
-      <button className="exit-button" onClick={handleBack}>
-        Выйти
+      <button 
+        className="exit-button" 
+        onClick={handleExit}
+        style={{ 
+          position: 'absolute', 
+          top: '20px', 
+          right: '20px', 
+          zIndex: 100,
+          background: 'rgba(255, 255, 255, 0.7)',
+          borderRadius: '50%',
+          width: '40px',
+          height: '40px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          border: 'none',
+          cursor: 'pointer'
+        }}
+      >
+        <X size={24} />
       </button>
       
       <motion.h1
@@ -42,7 +61,7 @@ const SlotMode: React.FC = () => {
       <div className="intro-cards">
         <div className="custom-card">
           <div className="card-content">
-            <div className="video-wrapper">
+            <div className="video-wrapper" style={{ width: '80vw', maxWidth: '800px', margin: '0 auto' }}>
               <CloudinaryVideo
                 publicId="drochka_2_ud7cqb"
                 className="game-video"
