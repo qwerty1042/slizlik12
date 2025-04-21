@@ -146,7 +146,7 @@ const ClassicMode: React.FC = () => {
               <div className="progress-container" style={{
                 width: '80%',
                 maxWidth: '400px',
-                background: 'rgba(255, 255, 255, 0.1)',
+                background: 'rgba(0, 0, 0, 0.1)',
                 borderRadius: '10px',
                 padding: '3px',
                 margin: '5px 0'
