@@ -38,8 +38,8 @@ const BdsmMode: React.FC = () => {
     if (!containerRef.current) return { x: 0, y: 0 };
     const container = containerRef.current.getBoundingClientRect();
     return {
-      x: Math.random() * (container.width - 200),
-      y: Math.random() * (container.height - 200)
+      x: Math.random() * (container.width - 100),
+      y: Math.random() * (container.height - 100)
     };
   };
 
@@ -67,8 +67,8 @@ const BdsmMode: React.FC = () => {
     const newY = e.clientY - container.top - dragOffset.y;
 
     // Keep within bounds
-    const maxX = container.width - 200;
-    const maxY = container.height - 200;
+    const maxX = container.width - 100;
+    const maxY = container.height - 100;
 
     setPosition({
       x: Math.max(0, Math.min(newX, maxX)),
@@ -92,8 +92,8 @@ const BdsmMode: React.FC = () => {
       const newY = e.clientY - container.top - dragOffset.y;
 
       // Keep within bounds
-      const maxX = container.width - 200;
-      const maxY = container.height - 200;
+      const maxX = container.width - 100;
+      const maxY = container.height - 100;
 
       setPosition({
         x: Math.max(0, Math.min(newX, maxX)),
@@ -181,7 +181,7 @@ const BdsmMode: React.FC = () => {
               {showVideo && (
                 <div className="video-wrapper">
                   <CloudinaryVideo
-                    publicId="ulta_Slavika_n1ee6q"
+                    publicId="ulta_Slavika"
                     className="game-video"
                     controls={false}
                     autoPlay={true}
@@ -212,16 +212,29 @@ const BdsmMode: React.FC = () => {
   }
 
   return (
-    <div className="bdsm-mode">
-      <div className="game-container" ref={containerRef}>
+    <div className="bdsm-mode" style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
+      <div 
+        className="game-container" 
+        ref={containerRef}
+        style={{ 
+          width: '100%', 
+          height: '100%', 
+          position: 'relative',
+          overflow: 'hidden'
+        }}
+      >
         <img
           src="assets/pletka.png"
           alt="Плетка"
           className="draggable-element"
           style={{
+            position: 'absolute',
             left: `${position.x}px`,
             top: `${position.y}px`,
-            cursor: isDragging ? 'grabbing' : 'grab'
+            cursor: isDragging ? 'grabbing' : 'grab',
+            width: '100px',
+            height: 'auto',
+            zIndex: 10
           }}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
@@ -234,9 +247,13 @@ const BdsmMode: React.FC = () => {
           alt="Копилка"
           className="target-element"
           style={{
+            position: 'absolute',
             left: '50%',
             top: '50%',
-            transform: 'translate(-50%, -50%)'
+            transform: 'translate(-50%, -50%)',
+            width: '100px',
+            height: 'auto',
+            zIndex: 5
           }}
           draggable="false"
         />
